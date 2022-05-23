@@ -9,7 +9,7 @@ import java.util.Timer;
 public abstract class AbstractOrderClient {
     private Order order;
     private AbstractKitchenServer kitchenServer;
-    Timer pollingTimer;
+    private Timer pollingTimer;
 
     public void addItemToOrder(OrderItem item) {
         order.addOrderItem(item);

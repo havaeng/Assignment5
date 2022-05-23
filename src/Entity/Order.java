@@ -1,18 +1,22 @@
 package Entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Order {
+public class Order implements Serializable {
     private String orderID;
     private List<OrderItem> orderList;
     private boolean sent;
     private boolean done;
     private OrderStatus status = OrderStatus.NotSent;
+    private int nextOrderID = 1;
 
     public Order() {
-        this.orderID = UUID.randomUUID().toString();
+        this.orderID = String.valueOf(nextOrderID);
+        nextOrderID++;
+        //this.orderID = UUID.randomUUID().toString();
         orderList = new ArrayList<>();
     }
 

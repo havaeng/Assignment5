@@ -23,7 +23,7 @@ public abstract class AbstractKitchenServer {
      * and return a confirmation that the order is received {@link KitchenStatus#Received}
      * or a rejection {@link KitchenStatus#Rejected}
      *
-     * When an order is received, a {@link #cook(Order)} task should be launced in th {@link #threadPool}
+     * When an order is received, a {@link #cook(Order)} task should be launched in the {@link #threadPool}
      *
      * Note that the methods should sleep for a random duration before it returns a status.
      * This is to simulate an actual server-call that might operate slowly.

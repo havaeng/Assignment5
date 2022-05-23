@@ -1,5 +1,7 @@
 package Boundary;
 
+import Control.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -37,12 +39,16 @@ public class GenericRestaurantForm {
     DefaultListModel<String> orderStatusModel;   // Stores a list of string that is displayed at orderStatusArea
     JList<String> orderStatusArea;               // To display status of the submitted order
 
-    public GenericRestaurantForm(){}
+    private Controller controller;
+
+    public GenericRestaurantForm(Controller controller){
+        this.controller = controller;
+    }
 
     /**
      * Starts the application
      */
-    public void Start() {
+    public void start() {
         frame = new JFrame();
         frame.setBounds(0, 0, 900, 482);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -161,11 +167,19 @@ public class GenericRestaurantForm {
         orderRemoveButton = new JButton();
         orderRemoveButton.setBounds(340, 300, 100, 30);
         orderRemoveButton.setText("remove");
+        orderRemoveButton.addActionListener(l -> {
+            //orderSubmitButton.setEnabled(true);
+            orderRemoveButton.setEnabled(false);
+        });
         frame.add(orderRemoveButton);
 
         orderSubmitButton = new JButton();
         orderSubmitButton.setBounds(490, 300, 100, 30);
         orderSubmitButton.setText("order!");
+        orderSubmitButton.addActionListener(l -> {
+            orderSubmitButton.setEnabled(false);
+            orderRemoveButton.setEnabled(true);
+        });
         frame.add(orderSubmitButton);
 
         //*********************
