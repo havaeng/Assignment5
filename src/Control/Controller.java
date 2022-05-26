@@ -17,21 +17,25 @@ public class Controller {
      }
 
      public void remove() {
+          gui.clearOrder();
      }
 
-     public void order() {
+     public void placeOrder() {
      }
 
-     public void addToOrderList(String jButtonName) {
-          switch (jButtonName){
+     public void addToOrderList(String string) {
+          switch (string){
                case "sandwich" -> {
                     order.addOrderItem(orderItem.sandwich());
+                    gui.updateOrderCart("Sandwich");
                }
                case "borscht" -> {
                     order.addOrderItem(orderItem.borscht());
+                    gui.updateOrderCart("Borscht");
                }
                case "coffee" -> {
                     order.addOrderItem(orderItem.coffee());
+                    gui.updateOrderCart("Coffee");
                }
           }
      }
