@@ -16,11 +16,11 @@ public class Server extends AbstractKitchenServer {
      private ServerSocket serverSocket;
      private List<User> userList;
 
-     public Server(Controller controller, int port){
+     public Server(Controller controller, int port) {
           this.controller = controller;
           try {
                serverSocket = new ServerSocket(port);
-          } catch (IOException e){
+          } catch (IOException e) {
                e.printStackTrace();
           }
           new Thread(new Connection()).start();
@@ -46,11 +46,11 @@ public class Server extends AbstractKitchenServer {
 
      }
 
-     private class Connection implements Runnable{
+     private class Connection implements Runnable {
           @Override
-          public void run(){
+          public void run() {
                Socket socket;
-               while (true){
+               while (true) {
                     try {
                          socket = serverSocket.accept();
                          ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -58,34 +58,34 @@ public class Server extends AbstractKitchenServer {
 
                          new Thread(new ClientHandler(ois, oos)).start();
 
-                    } catch (IOException e){
+                    } catch (IOException e) {
                          e.printStackTrace();
                     }
                }
           }
      }
 
-     private class ClientHandler implements Runnable{
+     private class ClientHandler implements Runnable {
           private ObjectInputStream ois;
           private ObjectOutputStream oos;
           private User user;
 
-          public ClientHandler(ObjectInputStream ois, ObjectOutputStream oos){
+          public ClientHandler(ObjectInputStream ois, ObjectOutputStream oos) {
                this.oos = oos;
                this.ois = ois;
                try {
                     Object user = ois.readObject();
                     this.user = (User) user;
-               } catch (ClassNotFoundException | IOException e){
+               } catch (ClassNotFoundException | IOException e) {
                     e.printStackTrace();
                }
                new Thread(new InputHandler()).start();
-               new Thread(new OutputHandler()).start();
+               new OutputHandler();
           }
 
           @Override
           public void run() {
-               while (true){
+               while (true) {
                     //Nånting
                }
           }
@@ -94,23 +94,28 @@ public class Server extends AbstractKitchenServer {
                this.user = user;
           }
 
-     private class InputHandler implements Runnable{
-          @Override
-          public void run(){
-               while (!Thread.interrupted()){
-                    try {
-                         User user = (User) ois.readObject();
-                         setUser(user);
-                    } catch (IOException | ClassNotFoundException e){
-                         e.printStackTrace();
+          class InputHandler implements Runnable {
+               @Override
+               public void run() {
+                    while (!Thread.interrupted()) {
+                         try {
+                              User user = (User) ois.readObject();
+                              setUser(user);
+                         } catch (IOException | ClassNotFoundException e) {
+                              e.printStackTrace();
+                         }
                     }
                }
           }
-     }
-     private class OutputHandler implements Runnable {
-          @Override
-          public void run() {
 
+          class OutputHandler {
+               public void send(String string) {
+                    try {
+                         oos.writeObject(string);
+                         oos.flush();
+                    } catch (IOException e) {
+                         e.printStackTrace();
+                    }
                }
           }
      }
