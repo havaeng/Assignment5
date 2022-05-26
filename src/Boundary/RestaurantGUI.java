@@ -94,7 +94,7 @@ public class RestaurantGUI {
         menuItem1Button.setText("Add sandwich");
         menuItem1Button.setName("sandwich");
         menuItem1Button.addActionListener(l -> {
-            controller.addToOrderList(menuItem1Name.getName());
+            controller.addToOrderList("sandwich");
         });
         menuItem1.add(menuItem1Button);
 
@@ -126,7 +126,7 @@ public class RestaurantGUI {
         menuItem2Button.setText("Add borscht");
         menuItem2Button.setName("borscht");
         menuItem2Button.addActionListener(l -> {
-            controller.addToOrderList(menuItem2Name.getName());
+            controller.addToOrderList("borscht");
         });
         menuItem2.add(menuItem2Button);
 
@@ -156,8 +156,9 @@ public class RestaurantGUI {
         menuItem3Button = new JButton();
         menuItem3Button.setBounds(150, 50, 130, 30);
         menuItem3Button.setText("Add coffee");
+        menuItem3Button.setName("coffee");
         menuItem3Button.addActionListener(l -> {
-            controller.addToOrderList(menuItem3Button.getName());
+            controller.addToOrderList("coffee");
         });
         menuItem3.add(menuItem3Button);
 
@@ -180,8 +181,6 @@ public class RestaurantGUI {
         orderRemoveButton.setBounds(340, 300, 130, 30);
         orderRemoveButton.setText("Remove order");
         orderRemoveButton.addActionListener(l -> {
-            //orderSubmitButton.setEnabled(true);
-            orderRemoveButton.setEnabled(false);
             controller.remove();
         });
         frame.add(orderRemoveButton);
@@ -190,8 +189,6 @@ public class RestaurantGUI {
         orderSubmitButton.setBounds(490, 300, 100, 30);
         orderSubmitButton.setText("Place order");
         orderSubmitButton.addActionListener(l -> {
-            orderSubmitButton.setEnabled(false);
-            orderRemoveButton.setEnabled(true);
             controller.order();
         });
         frame.add(orderSubmitButton);
@@ -219,5 +216,9 @@ public class RestaurantGUI {
 
     public void updateStatusLog(String string) {
         orderStatusModel.addElement(string);
+    }
+
+    public void clearOrder(){
+        orderCartModel.clear();
     }
 }
