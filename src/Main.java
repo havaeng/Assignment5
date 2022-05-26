@@ -1,9 +1,8 @@
-import Control.Controller;
+import Entity.Server;
 
 public class Main {
 
     public static void main(String[] args) {
-        new Controller();
-
+        new Server(20002);
     }
 }

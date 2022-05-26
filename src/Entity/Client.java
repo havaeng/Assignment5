@@ -1,6 +1,7 @@
 package Entity;
 
 import Control.AbstractOrderClient;
+import Control.Controller;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,14 +14,15 @@ public class Client implements Runnable {
      private ObjectInputStream ois;
      private ObjectOutputStream oos;
      private User user;
+     private Controller controller;
 
      public Client(String ipAdress, int port){
           try {
                socket = new Socket(ipAdress, port);
                oos = new ObjectOutputStream(socket.getOutputStream());
                ois = new ObjectInputStream(socket.getInputStream());
-               Order order = new Order();
-               user = new User(order);
+               controller = new Controller();
+               user = new User();
              //  new Thread(this).start(); // Hmm...
           } catch (IOException e){
                e.printStackTrace();
@@ -101,6 +103,6 @@ public class Client implements Runnable {
      } */
 
     public static void main(String[] args) {
-       // Client client = new Client();
+       new Client("127.0.0.1", 20002);
     }
 }

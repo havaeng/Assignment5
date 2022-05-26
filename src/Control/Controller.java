@@ -3,7 +3,6 @@ package Control;
 import Boundary.*;
 import Entity.Order;
 import Entity.OrderItem;
-import Entity.Server;
 
 public class Controller {
      Order order = new Order();
@@ -13,7 +12,6 @@ public class Controller {
 
      public Controller(){
           this.gui = new RestaurantGUI(this);
-          new Server(this, 20000);
      }
 
      public void remove() {
