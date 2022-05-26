@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class Client extends AbstractOrderClient implements Runnable {
+public class Client implements Runnable {
      private Socket socket;
      private ObjectInputStream ois;
      private ObjectOutputStream oos;
@@ -42,7 +42,7 @@ public class Client extends AbstractOrderClient implements Runnable {
          }
 
      }
-
+    /*
     @Override
     public void submitOrder() {
 
@@ -56,7 +56,7 @@ public class Client extends AbstractOrderClient implements Runnable {
     @Override
     protected void pickUpOrder() {
 
-    }
+    } */
 
     class InputCommunicator extends Thread {
           public void run(){
