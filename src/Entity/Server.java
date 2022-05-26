@@ -12,18 +12,16 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 public class Server{
-     private final Controller controller;
      private ServerSocket serverSocket;
      private List<User> userList;
 
-     public Server(Controller controller, int port) {
-          this.controller = controller;
+     public Server(int port) {
           try {
                serverSocket = new ServerSocket(port);
           } catch (IOException e) {
                e.printStackTrace();
           }
-          new Thread(new Connection()).start();
+          new Thread(new Connection()).start(); //Rätt
      }
 
      private class Connection implements Runnable {
@@ -50,6 +48,11 @@ public class Server{
           private ObjectOutputStream oos;
           private User user = null;
 
+          /**
+           * Listens for a user sent by Client
+           * @param ois
+           * @param oos
+           */
           public ClientHandler(ObjectInputStream ois, ObjectOutputStream oos) {
                this.oos = oos;
                this.ois = ois;
