@@ -116,19 +116,19 @@ public class Server{
                String string;
                switch (status){
                     case Received -> {
-                         string = "You order " + user.getCurrentOrder().getOrderID() + " is recived!";
+                         string = "Recieved";//"You order " + user.getCurrentOrder().getOrderID() + " is recived!";
                          oos.writeObject(string);
                     }
                     case BeingPrepared -> {
-                         string = "Your order " + user.getCurrentOrder().getOrderID() + " is being prepared!";
+                         string = "Prepared";//"Your order " + user.getCurrentOrder().getOrderID() + " is being prepared!";
                          oos.writeObject(string);
                     }
                     case Ready -> {
-                         string = "Your order " + user.getCurrentOrder().getOrderID() + " is ready!";
+                         string = "Ready";//"Your order " + user.getCurrentOrder().getOrderID() + " is ready!";
                          oos.writeObject(string);
                     }
                     case Served -> {
-                         string = "Your picked up order " + user.getCurrentOrder().getOrderID();
+                         string = "Served";//"Your picked up order " + user.getCurrentOrder().getOrderID();
                          oos.writeObject(string);
                     }
                }
