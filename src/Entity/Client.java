@@ -13,16 +13,16 @@ public class Client implements Runnable {
      private Socket socket;
      private ObjectInputStream ois;
      private ObjectOutputStream oos;
-     private User user;
-     private Controller controller;
+     private User user; //Rätt
+     private Controller controller; //Rätt
 
      public Client(String ipAdress, int port){
           try {
                socket = new Socket(ipAdress, port);
                oos = new ObjectOutputStream(socket.getOutputStream());
                ois = new ObjectInputStream(socket.getInputStream());
-               controller = new Controller();
-               user = new User();
+               controller = new Controller(); //Rätt
+               user = new User(); //Rätt
              //  new Thread(this).start(); // Hmm...
           } catch (IOException e){
                e.printStackTrace();
@@ -103,6 +103,6 @@ public class Client implements Runnable {
      } */
 
     public static void main(String[] args) {
-       new Client("127.0.0.1", 20002);
+       new Client("127.0.0.1", 20002); //Rätt
     }
 }

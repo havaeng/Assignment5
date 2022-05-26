@@ -5,13 +5,13 @@ import Entity.Order;
 import Entity.OrderItem;
 
 public class Controller {
-     Order order = new Order();
-     OrderItem orderItem = new OrderItem();
-     RestaurantGUI gui;
+     Order order = new Order(); //Rätt
+     OrderItem orderItem = new OrderItem(); //Rätt
+     RestaurantGUI gui; //Rätt
 
 
      public Controller(){
-          this.gui = new RestaurantGUI(this);
+          this.gui = new RestaurantGUI(this); //Rätt
      }
 
      public void remove() {

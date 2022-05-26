@@ -21,7 +21,7 @@ public class Server{
           } catch (IOException e) {
                e.printStackTrace();
           }
-          new Thread(new Connection()).start();
+          new Thread(new Connection()).start(); //Rätt
      }
 
      private class Connection implements Runnable {
