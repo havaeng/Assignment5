@@ -12,12 +12,14 @@ public class Client extends AbstractOrderClient implements Runnable {
      private ObjectInputStream ois;
      private ObjectOutputStream oos;
      private User user;
+     private Order order;
 
      public Client(String ipAdress, int port){
           try {
                socket = new Socket(ipAdress, port);
                oos = new ObjectOutputStream(socket.getOutputStream());
                ois = new ObjectInputStream(socket.getInputStream());
+               order = new Order();
                user = new User();
              //  new Thread(this).start(); // Hmm...
           } catch (IOException e){
@@ -34,7 +36,7 @@ public class Client extends AbstractOrderClient implements Runnable {
       * Ska aktiveras när "Order"-knappen trycks, skickar ett user object till server som har en order
       */
      public void order(){
-          //oos.writeObject();
+          oos.writeObject();
      }
 
     @Override

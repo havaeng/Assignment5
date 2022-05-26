@@ -11,6 +11,10 @@ public class User implements Serializable {
         this.currentOrder = null;
     }
 
+    public User(Order currentOrder){
+        this.currentOrder = currentOrder;
+    }
+
     public Long getUserId() {
         return userId;
     }
