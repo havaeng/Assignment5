@@ -5,7 +5,7 @@ import Control.Controller;
 import javax.swing.*;
 import java.awt.*;
 
-public class GenericRestaurantForm {
+public class RestaurantGUI {
 
     private JFrame frame;			// The Main window
 
@@ -41,7 +41,7 @@ public class GenericRestaurantForm {
 
     private Controller controller;
 
-    public GenericRestaurantForm(Controller controller){
+    public RestaurantGUI(Controller controller){
         this.controller = controller;
         start();
     }
@@ -90,8 +90,12 @@ public class GenericRestaurantForm {
         menuItem1.add(menuItem1Cost);
 
         menuItem1Button = new JButton();
-        menuItem1Button.setBounds(180, 50, 100, 30);
-        menuItem1Button.setText("add");
+        menuItem1Button.setBounds(150, 50, 130, 30);
+        menuItem1Button.setText("Add sandwich");
+        menuItem1Button.setName("sandwich");
+        menuItem1Button.addActionListener(l -> {
+            controller.addToOrderList(menuItem1Name.getName());
+        });
         menuItem1.add(menuItem1Button);
 
         //*********************
@@ -118,8 +122,12 @@ public class GenericRestaurantForm {
         menuItem2.add(menuItem2Cost);
 
         menuItem2Button = new JButton();
-        menuItem2Button.setBounds(180, 50, 100, 30);
-        menuItem2Button.setText("add");
+        menuItem2Button.setBounds(150, 50, 130, 30);
+        menuItem2Button.setText("Add borscht");
+        menuItem2Button.setName("borscht");
+        menuItem2Button.addActionListener(l -> {
+            controller.addToOrderList(menuItem2Name.getName());
+        });
         menuItem2.add(menuItem2Button);
 
         //*********************
@@ -146,8 +154,11 @@ public class GenericRestaurantForm {
         menuItem3.add(menuItem3Cost);
 
         menuItem3Button = new JButton();
-        menuItem3Button.setBounds(180, 50, 100, 30);
-        menuItem3Button.setText("add");
+        menuItem3Button.setBounds(150, 50, 130, 30);
+        menuItem3Button.setText("Add coffee");
+        menuItem3Button.addActionListener(l -> {
+            controller.addToOrderList(menuItem3Button.getName());
+        });
         menuItem3.add(menuItem3Button);
 
         //**************************
@@ -166,20 +177,22 @@ public class GenericRestaurantForm {
         frame.add(orderCartArea);
 
         orderRemoveButton = new JButton();
-        orderRemoveButton.setBounds(340, 300, 100, 30);
-        orderRemoveButton.setText("remove");
+        orderRemoveButton.setBounds(340, 300, 130, 30);
+        orderRemoveButton.setText("Remove order");
         orderRemoveButton.addActionListener(l -> {
             //orderSubmitButton.setEnabled(true);
             orderRemoveButton.setEnabled(false);
+            controller.remove();
         });
         frame.add(orderRemoveButton);
 
         orderSubmitButton = new JButton();
         orderSubmitButton.setBounds(490, 300, 100, 30);
-        orderSubmitButton.setText("order!");
+        orderSubmitButton.setText("Place order");
         orderSubmitButton.addActionListener(l -> {
             orderSubmitButton.setEnabled(false);
             orderRemoveButton.setEnabled(true);
+            controller.order();
         });
         frame.add(orderSubmitButton);
 
@@ -198,5 +211,13 @@ public class GenericRestaurantForm {
         orderStatusModel.addElement("19:02:05 Entity.Order accepted");
         frame.add(orderStatusArea);
 
+    }
+
+    public void updateOrderCart(String string) {
+        orderCartModel.addElement(string);
+    }
+
+    public void updateStatusLog(String string) {
+        orderStatusModel.addElement(string);
     }
 }

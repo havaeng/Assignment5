@@ -8,11 +8,12 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 public class Server{
      private final Controller controller;
      private ServerSocket serverSocket;
+     private List<User> userList;
 
      public Server(Controller controller, int port) {
           this.controller = controller;
