@@ -20,7 +20,7 @@ public class Controller {
           gui.clearOrder();
      }
 
-     public void order() {
+     public void placeOrder() {
      }
 
      public void addToOrderList(String string) {

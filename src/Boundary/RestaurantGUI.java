@@ -189,7 +189,7 @@ public class RestaurantGUI {
         orderSubmitButton.setBounds(490, 300, 100, 30);
         orderSubmitButton.setText("Place order");
         orderSubmitButton.addActionListener(l -> {
-            controller.order();
+            controller.placeOrder();
         });
         frame.add(orderSubmitButton);
 
