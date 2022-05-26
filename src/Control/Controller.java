@@ -1,24 +1,32 @@
 package Control;
 
 import Boundary.*;
+import Entity.Client;
 import Entity.Order;
 import Entity.OrderItem;
 
 public class Controller {
-     Order order = new Order();
-     OrderItem orderItem = new OrderItem();
-     RestaurantGUI gui;
+     private Order order = new Order();
+     private OrderItem orderItem = new OrderItem();
+     private RestaurantGUI gui;
+     private Client client;
 
 
-     public Controller(){
+     public Controller(Client client){
+          this.client = client;
+          client.setController(this);
           this.gui = new RestaurantGUI(this);
      }
 
      public void remove() {
           gui.clearOrder();
+          order.clear();
      }
 
-     public void placeOrder() {
+     public void placeOrder() throws InterruptedException {
+          gui.clearOrder();
+          gui.disableAllButtons();
+          client.placeOrder();
      }
 
      public void addToOrderList(String string) {
@@ -44,5 +52,9 @@ public class Controller {
 
      public void updateStatusLog(String string){
           gui.updateStatusLog(string);
+     }
+
+     public void enableAllButtons() {
+          gui.enableAllButtons();
      }
 }

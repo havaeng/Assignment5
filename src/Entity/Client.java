@@ -20,12 +20,16 @@ public class Client implements Runnable {
                socket = new Socket(ipAdress, port);
                oos = new ObjectOutputStream(socket.getOutputStream());
                ois = new ObjectInputStream(socket.getInputStream());
-               controller = new Controller();
+               controller = new Controller(this);
                user = new User();
              //  new Thread(this).start(); // Hmm...
           } catch (IOException e){
                e.printStackTrace();
           }
+     }
+
+     public Client(){
+
      }
 
     // @Override
@@ -51,6 +55,11 @@ public class Client implements Runnable {
              Thread.sleep(random.nextInt(3000));
              oos.writeObject("Update please");
          }
+         controller.enableAllButtons();
+     }
+
+     public void setController(Controller controller) {
+          this.controller = controller;
      }
     /*
     @Override
@@ -80,14 +89,15 @@ public class Client implements Runnable {
                        e.printStackTrace();
                    }
                    switch ((String) temp){
-                       case "Recieved":
-                           break;
-                       case "Prepared":
-                           break;
-                       case "Ready":
-                           break;
-                       case "Served":
-                           break;
+                       case "Recieved" -> controller.updateStatusLog("Order #" +
+                                 user.getCurrentOrder().getOrderID()
+                                 + " was received.");
+                       case "Prepared" -> controller.updateStatusLog("Order #" +
+                                 user.getCurrentOrder().getOrderID() + " is being prepared.");
+                       case "Ready" -> controller.updateStatusLog("Order #" +
+                                 user.getCurrentOrder().getOrderID() + " is ready!");
+                       case "Served" -> controller.updateStatusLog("Order #" +
+                                 user.getCurrentOrder().getOrderID() + " has been served.");
                    }
                }
           }

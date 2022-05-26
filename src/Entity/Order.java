@@ -64,4 +64,8 @@ public class Order implements Serializable {
     public String[] getNamesFromOrderList() {
         return orderList.stream().map(item -> item.getName()).toArray(String[]::new);
     }
+
+    public void clear() {
+        orderList.clear();
+    }
 }

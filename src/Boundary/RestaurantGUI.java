@@ -189,7 +189,11 @@ public class RestaurantGUI {
         orderSubmitButton.setBounds(490, 300, 100, 30);
         orderSubmitButton.setText("Place order");
         orderSubmitButton.addActionListener(l -> {
-            controller.placeOrder();
+            try {
+                controller.placeOrder();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
         frame.add(orderSubmitButton);
 
@@ -220,5 +224,21 @@ public class RestaurantGUI {
 
     public void clearOrder(){
         orderCartModel.clear();
+    }
+
+    public void disableAllButtons(){
+        orderRemoveButton.setEnabled(false);
+        orderSubmitButton.setEnabled(false);
+        menuItem3Button.setEnabled(false);
+        menuItem2Button.setEnabled(false);
+        menuItem1Button.setEnabled(false);
+    }
+
+    public void enableAllButtons(){
+        orderRemoveButton.setEnabled(true);
+        orderSubmitButton.setEnabled(true);
+        menuItem3Button.setEnabled(true);
+        menuItem2Button.setEnabled(true);
+        menuItem1Button.setEnabled(true);
     }
 }
