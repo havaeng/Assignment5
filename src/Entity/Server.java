@@ -8,11 +8,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class Server extends AbstractKitchenServer {
      private final Controller controller;
      private ServerSocket serverSocket;
+     private List<User> userList;
 
      public Server(Controller controller, int port){
           this.controller = controller;
@@ -21,6 +23,7 @@ public class Server extends AbstractKitchenServer {
           } catch (IOException e){
                e.printStackTrace();
           }
+          new Thread(new Connection()).start();
      }
 
      @Override
@@ -53,7 +56,7 @@ public class Server extends AbstractKitchenServer {
                          ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                          ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 
-                         new Thread(new ClientHandler(ois, oos, );
+                         new Thread(new ClientHandler(ois, oos)).start();
 
                     } catch (IOException e){
                          e.printStackTrace();
@@ -66,15 +69,48 @@ public class Server extends AbstractKitchenServer {
           private ObjectInputStream ois;
           private ObjectOutputStream oos;
           private User user;
-          public ClientHandler(ObjectInputStream ois, ObjectOutputStream oos, User user){
+
+          public ClientHandler(ObjectInputStream ois, ObjectOutputStream oos){
                this.oos = oos;
                this.ois = ois;
-               this.user = user;
+               try {
+                    Object user = ois.readObject();
+                    this.user = (User) user;
+               } catch (ClassNotFoundException | IOException e){
+                    e.printStackTrace();
+               }
+               new Thread(new InputHandler()).start();
+               new Thread(new OutputHandler()).start();
           }
+
           @Override
           public void run() {
                while (true){
                     //Nånting
+               }
+          }
+
+          public void setUser(User user) {
+               this.user = user;
+          }
+
+     private class InputHandler implements Runnable{
+          @Override
+          public void run(){
+               while (!Thread.interrupted()){
+                    try {
+                         User user = (User) ois.readObject();
+                         setUser(user);
+                    } catch (IOException | ClassNotFoundException e){
+                         e.printStackTrace();
+                    }
+               }
+          }
+     }
+     private class OutputHandler implements Runnable {
+          @Override
+          public void run() {
+
                }
           }
      }
