@@ -43,6 +43,7 @@ public class GenericRestaurantForm {
 
     public GenericRestaurantForm(Controller controller){
         this.controller = controller;
+        start();
     }
 
     /**
@@ -53,19 +54,19 @@ public class GenericRestaurantForm {
         frame.setBounds(0, 0, 900, 482);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setTitle("Generic Restaurant");
-        InitializeGUI();					// Fill in components
+        frame.setTitle("Restaurant");
+        initializeGUI();					// Fill in components
         frame.setVisible(true);
         frame.setResizable(true);			// Prevent user from change size
         frame.setLocationRelativeTo(null);	// Start middle screen
     }
 
-    private void InitializeGUI() {
+    private void initializeGUI() {
         labelMenu = new JLabel("Menu");
         labelMenu.setBounds(10, 10, 128, 13);
         frame.add(labelMenu);
 
-        //**********************
+        //*********************
         //*** Menu item 1 *****
         //*********************
         menuItem1 = new JPanel();
@@ -93,7 +94,7 @@ public class GenericRestaurantForm {
         menuItem1Button.setText("add");
         menuItem1.add(menuItem1Button);
 
-        //**********************
+        //*********************
         //*** Menu item 2 *****
         //*********************
         menuItem2 = new JPanel();
@@ -121,7 +122,7 @@ public class GenericRestaurantForm {
         menuItem2Button.setText("add");
         menuItem2.add(menuItem2Button);
 
-        //**********************
+        //*********************
         //*** Menu item 3 *****
         //*********************
         menuItem3 = new JPanel();
@@ -149,9 +150,9 @@ public class GenericRestaurantForm {
         menuItem3Button.setText("add");
         menuItem3.add(menuItem3Button);
 
-        //*********************
-        //*** Entity.Order cart  *****
-        //*********************
+        //**************************
+        //*** Entity.Order cart  ***
+        //**************************
         labelOrder = new JLabel("Entity.Order");
         labelOrder.setBounds(340, 10, 128, 13);
         frame.add(labelOrder);

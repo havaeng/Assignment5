@@ -1,11 +1,11 @@
 package Control;
 
 import Boundary.*;
+import Entity.Server;
 
 public class Controller {
-     GenericRestaurantForm gui = new GenericRestaurantForm(this);
-
      public Controller(){
-          gui.start();
+          new GenericRestaurantForm(this);
+          new Server(this, 20000);
      }
 }
