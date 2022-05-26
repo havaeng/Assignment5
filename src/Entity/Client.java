@@ -1,6 +1,5 @@
 package Entity;
 
-import Control.AbstractOrderClient;
 import Control.Controller;
 
 import java.io.IOException;
@@ -37,7 +36,7 @@ public class Client implements Runnable {
       * Samma princip som submit order fast inte implementerade = egen metod
       * Ska aktiveras när "Order"-knappen trycks, skickar ett user object till server som har en order
       */
-     public void order() throws InterruptedException {
+     public void placeOrder() throws InterruptedException {
          try {
              oos.writeObject(user);
              sendUpdates();
