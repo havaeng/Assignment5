@@ -1,7 +1,8 @@
 package Control;
 
-public class OrderClient extends AbstractOrderClient{
-    @Override
+public class OrderClient /*extends AbstractOrderClient */{
+
+  /*  @Override
     public void submitOrder() {
 
     }
@@ -14,5 +15,5 @@ public class OrderClient extends AbstractOrderClient{
     @Override
     protected void pickUpOrder() {
 
-    }
+    } */
 }

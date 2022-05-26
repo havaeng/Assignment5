@@ -11,39 +11,48 @@ public class Client extends AbstractOrderClient implements Runnable {
      private Socket socket;
      private ObjectInputStream ois;
      private ObjectOutputStream oos;
+     private User user;
 
      public Client(String ipAdress, int port){
           try {
                socket = new Socket(ipAdress, port);
                oos = new ObjectOutputStream(socket.getOutputStream());
                ois = new ObjectInputStream(socket.getInputStream());
-               new Thread(this).start();
+               user = new User();
+             //  new Thread(this).start(); // Hmm...
           } catch (IOException e){
                e.printStackTrace();
           }
      }
 
-     @Override
+    // @Override
      public void run() {
           //oos.write();
      }
-
-     @Override
-     public void submitOrder() {
-
+     /**
+      * Samma princip som submit order fast inte implementerade = egen metod
+      * Ska aktiveras när "Order"-knappen trycks, skickar ett user object till server som har en order
+      */
+     public void order(){
+          //oos.writeObject();
      }
 
-     @Override
-     protected void startPollingServer(String orderId) {
+    @Override
+    public void submitOrder() {
 
-     }
+    }
 
-     @Override
-     protected void pickUpOrder() {
+    @Override
+    protected void startPollingServer(String orderId) {
 
-     }
+    }
 
-     class InputCommunicator extends Thread {
+    @Override
+    protected void pickUpOrder() {
+
+    }
+
+    class InputCommunicator extends Thread {
           public void run(){
                while (!Thread.interrupted()) {
                     //Nånting

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Order implements Serializable {
+    private static final long serialVersionUID = 4L; // this??
     private String orderID;
     private List<OrderItem> orderList;
     private boolean sent;
@@ -14,9 +15,9 @@ public class Order implements Serializable {
     private int nextOrderID = 1;
 
     public Order() {
-        this.orderID = String.valueOf(nextOrderID);
-        nextOrderID++;
-        //this.orderID = UUID.randomUUID().toString();
+       this.orderID = String.valueOf(nextOrderID);
+       nextOrderID++;
+       this.orderID = UUID.randomUUID().toString();
         orderList = new ArrayList<>();
     }
 
