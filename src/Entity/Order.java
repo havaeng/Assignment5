@@ -18,7 +18,7 @@ public class Order implements Serializable {
        this.orderID = String.valueOf(nextOrderID);
        nextOrderID++;
        this.orderID = UUID.randomUUID().toString();
-        orderList = new ArrayList<>();
+       orderList = new ArrayList<>();
     }
 
     public OrderStatus getStatus() {

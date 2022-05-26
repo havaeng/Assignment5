@@ -1,4 +1,3 @@
-import Boundary.GenericRestaurantForm;
 import Control.Controller;
 
 public class Main {

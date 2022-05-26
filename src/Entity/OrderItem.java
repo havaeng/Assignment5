@@ -8,6 +8,10 @@ public class OrderItem {
     private String description;
     private float cost;
 
+    public OrderItem(){
+
+    }
+
     public OrderItem(String name, String desc, float cost) {
         this.itemID = UUID.randomUUID().toString();
         this.name = name;
@@ -41,6 +45,18 @@ public class OrderItem {
 
     public String getItemID() {
         return itemID;
+    }
+
+    public OrderItem sandwich(){
+        return new OrderItem("Sandwich", "Bread, meat, cheese, salad, vegetables, sauce", 23);
+    }
+
+    public OrderItem coffee(){
+        return new OrderItem("Coffee", "Hot, black, good", 18);
+    }
+
+    public OrderItem borscht(){
+        return new OrderItem("Borscht", "Beetroot, cabbage, potato, beef", 84);
     }
 
 }
