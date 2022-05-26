@@ -1,16 +1,16 @@
 package Entity;
 
 public enum OrderStatus {
-    NotSent("not sent to the server"),
-    Received("received"),
-    BeingPrepared("preparing"),
-    Ready("ready"),
-    Served("served"),
-    NotFound("not found");
+    NotSent("Not sent to the server."),
+    Received("Received!"),
+    BeingPrepared("Preparing..."),
+    Ready("Ready!"),
+    Served("Served."),
+    NotFound("Not found");
 
     public final String text;
 
-    private OrderStatus(String name){
+    OrderStatus(String name){
         this.text = name;
     }
 }
