@@ -12,15 +12,14 @@ public class Client extends AbstractOrderClient implements Runnable {
      private ObjectInputStream ois;
      private ObjectOutputStream oos;
      private User user;
-     private Order order;
 
      public Client(String ipAdress, int port){
           try {
                socket = new Socket(ipAdress, port);
                oos = new ObjectOutputStream(socket.getOutputStream());
                ois = new ObjectInputStream(socket.getInputStream());
-               order = new Order();
-               user = new User();
+               Order order = new Order();
+               user = new User(order);
              //  new Thread(this).start(); // Hmm...
           } catch (IOException e){
                e.printStackTrace();
