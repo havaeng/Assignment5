@@ -35,7 +35,12 @@ public class Client extends AbstractOrderClient implements Runnable {
       * Ska aktiveras när "Order"-knappen trycks, skickar ett user object till server som har en order
       */
      public void order(){
-          oos.writeObject();
+         try {
+             oos.writeObject(user);
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+
      }
 
     @Override
