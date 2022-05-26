@@ -1,6 +1,5 @@
 package Entity;
 
-import Control.AbstractKitchenServer;
 import Control.Controller;
 
 import java.io.IOException;
@@ -9,9 +8,10 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
-public class Server extends AbstractKitchenServer {
+public class Server{
      private final Controller controller;
      private ServerSocket serverSocket;
      private List<User> userList;
@@ -24,26 +24,6 @@ public class Server extends AbstractKitchenServer {
                e.printStackTrace();
           }
           new Thread(new Connection()).start();
-     }
-
-     @Override
-     public CompletableFuture<KitchenStatus> receiveOrder(Order order) throws InterruptedException {
-          return null;
-     }
-
-     @Override
-     public CompletableFuture<OrderStatus> checkStatus(String orderID) throws InterruptedException {
-          return null;
-     }
-
-     @Override
-     public CompletableFuture<KitchenStatus> serveOrder(String orderID) throws InterruptedException {
-          return null;
-     }
-
-     @Override
-     protected void cook(Order order) {
-
      }
 
      private class Connection implements Runnable {
@@ -68,25 +48,89 @@ public class Server extends AbstractKitchenServer {
      private class ClientHandler implements Runnable {
           private ObjectInputStream ois;
           private ObjectOutputStream oos;
-          private User user;
+          private User user = null;
 
           public ClientHandler(ObjectInputStream ois, ObjectOutputStream oos) {
                this.oos = oos;
                this.ois = ois;
-               try {
-                    Object user = ois.readObject();
-                    this.user = (User) user;
-               } catch (ClassNotFoundException | IOException e) {
-                    e.printStackTrace();
-               }
-               new Thread(new InputHandler()).start();
-               new OutputHandler();
+               new Thread(this).start();
           }
 
+          /**
+           * 1. Försöker hämta en första order, lägger till usern som har order som instans
+           * 2. När det är fixat startas inputHandler och outputHandler
+           * Inputhandler will hämta fler ordrar/status req från användaren
+           */
           @Override
           public void run() {
-               while (true) {
-                    //Nånting
+               while (user == null) {
+                    Object user;
+                    try {
+                         user = ois.readObject();
+                         this.user = (User) user;
+                    } catch (IOException e) {
+                         e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                         e.printStackTrace();
+                    }
+                    try {
+                         recieveOrder();
+                    } catch (IOException e) {
+                         e.printStackTrace();
+                    }
+               }
+               new Thread(new InputHandler()).start();
+          }
+
+          private void recieveOrder() throws IOException {
+               System.out.println("Successfully stored the user/order!");
+               this.user.getCurrentOrder().setStatus(OrderStatus.Received);
+               statusInfo(user.getCurrentOrder().getStatus());
+               try {
+                    Random random = new Random();
+                    Thread.sleep(random.nextInt(5000));
+               } catch (InterruptedException e) {
+                    e.printStackTrace();
+               }
+               cook();
+          }
+
+          private void cook() throws IOException {
+               this.user.getCurrentOrder().setStatus(OrderStatus.BeingPrepared);
+               statusInfo(user.getCurrentOrder().getStatus());
+               try {
+                    Random random = new Random();
+                    Thread.sleep(random.nextInt(6000));
+               } catch (InterruptedException e) {
+                    e.printStackTrace();
+               }
+               serveOrder();
+          }
+
+          private void serveOrder() throws IOException {
+               this.user.getCurrentOrder().setStatus(OrderStatus.Ready);
+               statusInfo(user.getCurrentOrder().getStatus());
+          }
+
+          public void statusInfo(OrderStatus status) throws IOException { //Vill vi ha try catch?
+               String string;
+               switch (status){
+                    case Received -> {
+                         string = "You order " + user.getCurrentOrder().getOrderID() + " is recived!";
+                         oos.writeObject(string);
+                    }
+                    case BeingPrepared -> {
+                         string = "Your order " + user.getCurrentOrder().getOrderID() + " is being prepared!";
+                         oos.writeObject(string);
+                    }
+                    case Ready -> {
+                         string = "Your order " + user.getCurrentOrder().getOrderID() + " is ready!";
+                         oos.writeObject(string);
+                    }
+                    case Served -> {
+                         string = "Your picked up order " + user.getCurrentOrder().getOrderID();
+                         oos.writeObject(string);
+                    }
                }
           }
 
@@ -94,27 +138,22 @@ public class Server extends AbstractKitchenServer {
                this.user = user;
           }
 
-          class InputHandler implements Runnable {
+          private class InputHandler implements Runnable {
                @Override
                public void run() {
                     while (!Thread.interrupted()) {
                          try {
-                              User user = (User) ois.readObject();
-                              setUser(user);
+                              Object temp = ois.readObject();
+                              if(temp instanceof User) {
+                                   setUser((User) temp);
+                                   recieveOrder();
+                              }
+                              else if(temp instanceof String){
+                                   statusInfo(user.getCurrentOrder().getStatus());
+                              }
                          } catch (IOException | ClassNotFoundException e) {
                               e.printStackTrace();
                          }
-                    }
-               }
-          }
-
-          class OutputHandler {
-               public void send(String string) {
-                    try {
-                         oos.writeObject(string);
-                         oos.flush();
-                    } catch (IOException e) {
-                         e.printStackTrace();
                     }
                }
           }

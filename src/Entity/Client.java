@@ -7,20 +7,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class Client extends AbstractOrderClient implements Runnable {
+public class Client implements Runnable {
      private Socket socket;
      private ObjectInputStream ois;
      private ObjectOutputStream oos;
      private User user;
-     private Order order;
 
      public Client(String ipAdress, int port){
           try {
                socket = new Socket(ipAdress, port);
                oos = new ObjectOutputStream(socket.getOutputStream());
                ois = new ObjectInputStream(socket.getInputStream());
-               order = new Order();
-               user = new User();
+               Order order = new Order();
+               user = new User(order);
              //  new Thread(this).start(); // Hmm...
           } catch (IOException e){
                e.printStackTrace();
@@ -36,9 +35,14 @@ public class Client extends AbstractOrderClient implements Runnable {
       * Ska aktiveras när "Order"-knappen trycks, skickar ett user object till server som har en order
       */
      public void order(){
-          //oos.writeObject();
-     }
+         try {
+             oos.writeObject(user);
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
 
+     }
+    /*
     @Override
     public void submitOrder() {
 
@@ -52,7 +56,7 @@ public class Client extends AbstractOrderClient implements Runnable {
     @Override
     protected void pickUpOrder() {
 
-    }
+    } */
 
     class InputCommunicator extends Thread {
           public void run(){

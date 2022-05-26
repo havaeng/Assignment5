@@ -8,6 +8,7 @@ public enum OrderStatus {
     Served("Served."),
     NotFound("Not found");
 
+
     public final String text;
 
     OrderStatus(String name){
