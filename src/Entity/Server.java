@@ -15,7 +15,6 @@ public class Server{
      private ServerSocket serverSocket;
 
      public Server(Controller controller, int port) {
-
           this.controller = controller;
           try {
                serverSocket = new ServerSocket(port);
