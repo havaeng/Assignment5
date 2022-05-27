@@ -82,12 +82,16 @@ public class Client implements Runnable {
                    }
                    switch ((String) temp){
                        case "Recieved":
+                           //GUI UPDATE
                            break;
                        case "Prepared":
+                           //GUI UPDATE
                            break;
                        case "Ready":
+                           //GUI UPDATE
                            break;
                        case "Served":
+                           //GUI UPDATE
                            break;
                    }
                }
