@@ -46,7 +46,7 @@ public class Server{
      private class ClientHandler implements Runnable {
           private ObjectInputStream ois;
           private ObjectOutputStream oos;
-          private User user = null;
+          private Order order = null;
 
           /**
            * Listens for a user sent by Client
@@ -66,29 +66,29 @@ public class Server{
            */
           @Override
           public void run() {
-               while (user == null) {
-                    Object user;
+               while (order == null) {
+                    Object order;
                     try {
-                         user = ois.readObject();
-                         this.user = (User) user;
+                         order = ois.readObject();
+                         this.order = (Order) order;
                     } catch (IOException e) {
                          e.printStackTrace();
                     } catch (ClassNotFoundException e) {
                          e.printStackTrace();
                     }
-                    try {
-                         recieveOrder();
-                    } catch (IOException e) {
-                         e.printStackTrace();
-                    }
+               }
+               try {
+                    recieveOrder();
+               } catch (IOException e) {
+                    e.printStackTrace();
                }
                new Thread(new InputHandler()).start();
           }
 
           private void recieveOrder() throws IOException {
                System.out.println("Successfully stored the user/order!");
-               this.user.getCurrentOrder().setStatus(OrderStatus.Received);
-               statusInfo(user.getCurrentOrder().getStatus());
+               this.order.setStatus(OrderStatus.Received);
+               statusInfo(order.getStatus());
                try {
                     Random random = new Random();
                     Thread.sleep(random.nextInt(5000));
@@ -99,8 +99,8 @@ public class Server{
           }
 
           private void cook() throws IOException {
-               this.user.getCurrentOrder().setStatus(OrderStatus.BeingPrepared);
-               statusInfo(user.getCurrentOrder().getStatus());
+               this.order.setStatus(OrderStatus.BeingPrepared);
+               statusInfo(order.getStatus());
                try {
                     Random random = new Random();
                     Thread.sleep(random.nextInt(6000));
@@ -111,8 +111,8 @@ public class Server{
           }
 
           private void serveOrder() throws IOException {
-               this.user.getCurrentOrder().setStatus(OrderStatus.Ready);
-               statusInfo(user.getCurrentOrder().getStatus());
+               this.order.setStatus(OrderStatus.Ready);
+               statusInfo(order.getStatus());
           }
 
           public void statusInfo(OrderStatus status) throws IOException { //Vill vi ha try catch?
@@ -137,8 +137,8 @@ public class Server{
                }
           }
 
-          public void setUser(User user) {
-               this.user = user;
+          public void setOrder(Order order) {
+               this.order = order;
           }
 
           private class InputHandler implements Runnable {
@@ -148,11 +148,11 @@ public class Server{
                          try {
                               Object temp = ois.readObject();
                               if(temp instanceof User) {
-                                   setUser((User) temp);
+                                   setOrder((Order) temp);
                                    recieveOrder();
                               }
                               else if(temp instanceof String){
-                                   statusInfo(user.getCurrentOrder().getStatus());
+                                   statusInfo(order.getStatus());
                               }
                          } catch (IOException | ClassNotFoundException e) {
                               e.printStackTrace();

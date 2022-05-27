@@ -19,7 +19,7 @@ public class Controller {
 
      public void remove() {
           gui.clearOrder();
-          client.getUser().getCurrentOrder().clear();
+          client.getOrder().clear();
      }
 
      public void placeOrder() throws InterruptedException {
@@ -31,15 +31,15 @@ public class Controller {
      public void addToOrderList(String string) {
           switch (string){
                case "sandwich" -> {
-                    client.getUser().getCurrentOrder().addOrderItem(orderItem.sandwich());
+                    client.getOrder().addOrderItem(orderItem.sandwich());
                     gui.updateOrderCart("Sandwich");
                }
                case "borscht" -> {
-                    client.getUser().getCurrentOrder().addOrderItem(orderItem.borscht());
+                    client.getOrder().addOrderItem(orderItem.borscht());
                     gui.updateOrderCart("Borscht");
                }
                case "coffee" -> {
-                    client.getUser().getCurrentOrder().addOrderItem(orderItem.coffee());
+                    client.getOrder().addOrderItem(orderItem.coffee());
                     gui.updateOrderCart("Coffee");
                }
           }

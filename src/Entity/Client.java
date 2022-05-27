@@ -12,7 +12,7 @@ public class Client implements Runnable {
      private Socket socket;
      private ObjectInputStream ois;
      private ObjectOutputStream oos;
-     private User user;
+     private Order order;
      private Controller controller;
 
      public Client(String ipAdress, int port, Controller controller){
@@ -21,16 +21,12 @@ public class Client implements Runnable {
                oos = new ObjectOutputStream(socket.getOutputStream());
                ois = new ObjectInputStream(socket.getInputStream());
                this.controller = controller;
-               user = new User();
+               order = new Order();
              //  new Thread(this).start(); // Hmm...
           } catch (IOException e){
                e.printStackTrace();
           }
      }
-
-    public User getUser() {
-        return user;
-    }
 
     // @Override
      public void run() {
@@ -42,7 +38,8 @@ public class Client implements Runnable {
       */
      public void placeOrder() throws InterruptedException {
          try {
-             oos.writeObject(user);
+             oos.writeObject(order);
+             oos.flush();
              sendUpdates();
          } catch (IOException e) {
              e.printStackTrace();
@@ -50,18 +47,24 @@ public class Client implements Runnable {
      }
 
      public void sendUpdates() throws InterruptedException, IOException {
-         while (user.getCurrentOrder().getStatus() != OrderStatus.Served){
+         while (order.getStatus() != OrderStatus.Served){
              Random random = new Random();
              Thread.sleep(random.nextInt(3000));
              oos.writeObject("Update please");
+             oos.flush();
          }
          controller.enableAllButtons();
      }
 
-     public void setController(Controller controller) {
-          this.controller = controller;
-     }
-    /*
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+     /*
     @Override
     public void submitOrder() {
 
@@ -90,14 +93,14 @@ public class Client implements Runnable {
                    }
                    switch ((String) temp){
                        case "Recieved" -> controller.updateStatusLog("Order #" +
-                                 user.getCurrentOrder().getOrderID()
+                                 order.getOrderID()
                                  + " was received.");
                        case "Prepared" -> controller.updateStatusLog("Order #" +
-                                 user.getCurrentOrder().getOrderID() + " is being prepared.");
+                                 order.getOrderID() + " is being prepared.");
                        case "Ready" -> controller.updateStatusLog("Order #" +
-                                 user.getCurrentOrder().getOrderID() + " is ready!");
+                                 order.getOrderID() + " is ready!");
                        case "Served" -> controller.updateStatusLog("Order #" +
-                                 user.getCurrentOrder().getOrderID() + " has been served.");
+                                 order.getOrderID() + " has been served.");
                    }
                }
           }
