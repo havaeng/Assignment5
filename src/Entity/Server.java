@@ -5,6 +5,7 @@ import Control.Controller;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
@@ -31,10 +32,7 @@ public class Server{
                while (true) {
                     try {
                          socket = serverSocket.accept();
-                         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-
-                         new Thread(new ClientHandler(ois, oos)).start();
+                         new Thread(new ClientHandler(socket)).start();
 
                     } catch (IOException e) {
                          e.printStackTrace();
@@ -50,12 +48,14 @@ public class Server{
 
           /**
            * Listens for a user sent by Client
-           * @param ois
-           * @param oos
            */
-          public ClientHandler(ObjectInputStream ois, ObjectOutputStream oos) {
-               this.oos = oos;
-               this.ois = ois;
+          public ClientHandler(Socket socket) {
+               try {
+                    oos = new ObjectOutputStream(socket.getOutputStream());
+                    ois = new ObjectInputStream(socket.getInputStream());
+               } catch (IOException e) {
+                    e.printStackTrace();
+               }
                new Thread(this).start();
           }
 
@@ -66,17 +66,15 @@ public class Server{
            */
           @Override
           public void run() {
-               while (order == null) {
-                    Object order;
+               while (this.order == null) {
                     try {
-                         order = ois.readObject();
-                         this.order = (Order) order;
-                    } catch (IOException e) {
-                         e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
+                         Object order = ois.readObject();
+                         String test = (String) order;
+                    } catch (IOException | ClassNotFoundException e) {
                          e.printStackTrace();
                     }
                }
+
                try {
                     recieveOrder();
                } catch (IOException e) {

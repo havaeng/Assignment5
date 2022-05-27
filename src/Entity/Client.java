@@ -38,7 +38,9 @@ public class Client implements Runnable {
       */
      public void placeOrder() throws InterruptedException {
          try {
-             oos.writeObject(order);
+             String hallo = "Hallo";
+             oos.writeObject(hallo);
+            // oos.writeObject(order);
              oos.flush();
              sendUpdates();
          } catch (IOException e) {
