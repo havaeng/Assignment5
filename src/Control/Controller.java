@@ -6,21 +6,20 @@ import Entity.Order;
 import Entity.OrderItem;
 
 public class Controller {
-     private Order order = new Order();
+    // private Order order = new Order();
      private OrderItem orderItem = new OrderItem();
      private RestaurantGUI gui;
      private Client client;
 
 
-     public Controller(Client client){
-          this.client = client;
-          client.setController(this);
+     public Controller(){
+          client = new Client("127.0.0.1", 20003, this);
           this.gui = new RestaurantGUI(this);
      }
 
      public void remove() {
           gui.clearOrder();
-          order.clear();
+          client.getUser().getCurrentOrder().clear();
      }
 
      public void placeOrder() throws InterruptedException {
@@ -32,15 +31,15 @@ public class Controller {
      public void addToOrderList(String string) {
           switch (string){
                case "sandwich" -> {
-                    order.addOrderItem(orderItem.sandwich());
+                    client.getUser().getCurrentOrder().addOrderItem(orderItem.sandwich());
                     gui.updateOrderCart("Sandwich");
                }
                case "borscht" -> {
-                    order.addOrderItem(orderItem.borscht());
+                    client.getUser().getCurrentOrder().addOrderItem(orderItem.borscht());
                     gui.updateOrderCart("Borscht");
                }
                case "coffee" -> {
-                    order.addOrderItem(orderItem.coffee());
+                    client.getUser().getCurrentOrder().addOrderItem(orderItem.coffee());
                     gui.updateOrderCart("Coffee");
                }
           }

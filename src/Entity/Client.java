@@ -15,12 +15,12 @@ public class Client implements Runnable {
      private User user;
      private Controller controller;
 
-     public Client(String ipAdress, int port){
+     public Client(String ipAdress, int port, Controller controller){
           try {
                socket = new Socket(ipAdress, port);
                oos = new ObjectOutputStream(socket.getOutputStream());
                ois = new ObjectInputStream(socket.getInputStream());
-               controller = new Controller(this);
+               this.controller = controller;
                user = new User();
              //  new Thread(this).start(); // Hmm...
           } catch (IOException e){
@@ -28,9 +28,9 @@ public class Client implements Runnable {
           }
      }
 
-     public Client(){
-
-     }
+    public User getUser() {
+        return user;
+    }
 
     // @Override
      public void run() {
@@ -110,8 +110,4 @@ public class Client implements Runnable {
                }
           }
      } */
-
-    public static void main(String[] args) {
-       new Client("127.0.0.1", 20003);
-    }
 }
