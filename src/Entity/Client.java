@@ -2,15 +2,10 @@ package Entity;
 
 import Control.Controller;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.Random;
-
 public class Client extends AbstractOrderClient implements Runnable{
      private Order order;
      private Controller controller;
+     private BoundedBuffer buffer;
 
      public Client(){
 
@@ -19,11 +14,18 @@ public class Client extends AbstractOrderClient implements Runnable{
 
     // @Override
      public void run() {
+          while (order == null){
+               buffer.recieveOrder()
+          }
      }
 
     @Override
-    public void submitOrder() {
-
+    public void submitOrder(Order order) {
+          try {
+               buffer.submitOrder(order);
+          } catch (InterruptedException e){
+               e.printStackTrace();
+          }
     }
 
     @Override

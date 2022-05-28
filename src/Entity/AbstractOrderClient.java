@@ -22,7 +22,9 @@ public abstract class AbstractOrderClient {
 
    abstract public void submitOrder();
 
-    /**
+     public abstract void submitOrder(Order order);
+
+     /**
      * Start a new task with a periodic timer {@link #pollingTimer}
      * to ask a server periodically about the order status {@link AbstractKitchenServer#checkStatus(String)}.
      *

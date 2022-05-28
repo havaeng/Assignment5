@@ -5,7 +5,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,6 +20,12 @@ public class Server {
      public Server() {
           threadPool = Executors.newFixedThreadPool(5);
      }
+
+     private void acceptOrder(Order order){
+          orderMap.put(order.getOrderID(), order);
+          threadPool.submit(receiveOrder(order));
+     }
+
      private Runnable receiveOrder(Order order){
           Runnable receiveOrder = () -> {
                try {
@@ -56,10 +64,5 @@ public class Server {
                e.printStackTrace();
           }
           order.setStatus(OrderStatus.Ready);
-     }
-
-          public void setOrder(Order order) {
-               this.order = order;
-          }
      }
 }

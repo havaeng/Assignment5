@@ -10,36 +10,17 @@ public class BoundedBuffer {
     private LinkedList<Order> orders;
     private Controller controller;
 
-    private Semaphore semProducer; // Kolla in!
-    private Semaphore semConsumer;
-    private Semaphore wholeBuffMutex;
-
     public BoundedBuffer(Controller controller) {
         this.controller = controller;
         orders = new LinkedList<>();
-        semProducer = new Semaphore(20);
-        semConsumer = new Semaphore(0);
-        wholeBuffMutex = new Semaphore(1);
     }
 
-    public void submitOrder(Order order) throws InterruptedException
-    {
-        semProducer.acquire();
-        wholeBuffMutex.acquire();
-
+    public void submitOrder(Order order) throws InterruptedException {
         orders.addLast(order);
-        semConsumer.release();
-        wholeBuffMutex.release();
     }
 
-    public Order recieveOrder(Server server) throws InterruptedException
-    {
-        semConsumer.acquire();
-        wholeBuffMutex.acquire();
-
+    public Order recieveOrder(Server server) throws InterruptedException {
         Order order = orders.removeFirst();
-        semProducer.release();
-        wholeBuffMutex.release();
         return order;
     }
 }
