@@ -13,7 +13,7 @@ public class Controller {
 
 
      public Controller(){
-          client = new Client("127.0.0.1", 20003, this);
+          client = new Client("127.0.0.1", 20004, this);
           this.gui = new RestaurantGUI(this);
      }
 
@@ -24,7 +24,7 @@ public class Controller {
 
      public void placeOrder() throws InterruptedException {
           gui.clearOrder();
-          gui.disableAllButtons();
+          //gui.disableAllButtons();
           client.placeOrder();
      }
 

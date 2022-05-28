@@ -9,9 +9,8 @@ import java.util.concurrent.CompletableFuture;
 
 
  public abstract class AbstractKitchenServer {
-
-   // ExecutorService threadPool;
-    //Map<String, Order> orderMap;
+  ExecutorService threadPool;
+  Map<String, Order> orderMap;
 
     /**
      * This method should save the order to the map
