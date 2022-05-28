@@ -12,12 +12,21 @@ public class TheInternet /*Buffer*/ {
     }
 
     public void submitOrder(Order order) throws InterruptedException {
+        System.out.println("Order added to buffer (orders)");
         orders.addLast(order);
+        for (int i = 0; i < order.getOrderList().size(); i++) {
+            System.out.println(orders.get(i).getOrderList().get(i).getName());
+
+        }
     }
 
     public Order receiveOrder() throws InterruptedException {
-        Order order = orders.removeFirst();
-        return order;
+        if (!orders.isEmpty()) {
+            Order order = orders.removeFirst();
+            System.out.println("Order removed from buffer (orders)");
+            return order;
+        }
+        return null;
     }
 
     public void sendRequest(String string){

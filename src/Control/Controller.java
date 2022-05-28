@@ -22,10 +22,11 @@ public class Controller {
 
      public void remove() {
           gui.clearOrder();
-         // client.getOrder().clear();
+          client.getOrder().clear();
      }
 
      public void placeOrder() throws InterruptedException {
+          System.out.println("Order placed in controller");
           gui.clearOrder();
           gui.disableAllButtons();
           client.submitOrder();

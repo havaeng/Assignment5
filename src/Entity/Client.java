@@ -25,7 +25,10 @@ public class Client {
      }
 
      protected void pickUpOrder() {
-
+          while (order.isDone()) {
+               System.out.println("Order is picked up.");
+               break;
+          }
      }
 
      public Order getOrder() {

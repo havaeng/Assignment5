@@ -23,7 +23,10 @@ public class Server implements Runnable {
           while (true){
                try {
                     Order order = buffer.receiveOrder();
-                    acceptOrder(order);
+                    if (!(order == null)) {
+                         acceptOrder(order);
+                         System.out.println("Order received by server");
+                    }
                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                }
@@ -33,6 +36,7 @@ public class Server implements Runnable {
      private void acceptOrder(Order order){
           orderMap.put(order.getOrderID(), order);
           threadPool.submit(receiveOrder(order));
+          System.out.println("Order sent to threadPool");
      }
 
      private Runnable receiveOrder(Order order){
