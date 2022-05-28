@@ -5,15 +5,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
-public class Server{
+public class Server {
      private ServerSocket serverSocket;
      private List<User> userList;
      private ExecutorService threadPool;
+     private Map<String, Order> orderMap = new HashMap<>();
 
      public Server(int port) {
           try {
@@ -74,41 +76,52 @@ public class Server{
                          e.printStackTrace();
                     }
                }
-
-               try {
-                    receiveOrder();
-               } catch (IOException e) {
-                    e.printStackTrace();
-               }
+               acceptOrder(order);
                new Thread(new InputHandler()).start();
           }
 
-          private void receiveOrder() throws IOException {
-               System.out.println("Successfully stored the user/order!");
-               this.order.setStatus(OrderStatus.Received);
-               statusInfo(order.getStatus());
+          private void acceptOrder(Order order){
+               orderMap.put(order.getOrderID(), order);
+               threadPool.submit(receiveOrder(order));
+          }
+
+          private Runnable receiveOrder(Order order){
+               Runnable receiveOrder = () -> {
+                    try {
+                         Random random = new Random();
+                         Thread.sleep(random.nextInt(1000,5000));
+                    } catch (InterruptedException e) {
+                         throw new RuntimeException(e);
+                    }
+                    order.setStatus(OrderStatus.Received);
+                    try {
+                         cook(order);
+                    } catch (IOException e) {
+                         throw new RuntimeException(e);
+                    }
+               };
+               return receiveOrder;
+          }
+
+          private void cook(Order order) throws IOException {
                try {
                     Random random = new Random();
-                    Thread.sleep(random.nextInt(5000));
+                    Thread.sleep(random.nextInt(1000,5000));
                } catch (InterruptedException e) {
                     e.printStackTrace();
                }
-               cook();
-          }
-
-          private void cook() throws IOException {
                this.order.setStatus(OrderStatus.BeingPrepared);
                statusInfo(order.getStatus());
+               serveOrder(order);
+          }
+
+          private void serveOrder(Order order) throws IOException {
                try {
                     Random random = new Random();
-                    Thread.sleep(random.nextInt(6000));
+                    Thread.sleep(random.nextInt(1000,5000));
                } catch (InterruptedException e) {
                     e.printStackTrace();
                }
-               serveOrder();
-          }
-
-          private void serveOrder() throws IOException {
                this.order.setStatus(OrderStatus.Ready);
                statusInfo(order.getStatus());
           }
@@ -147,7 +160,7 @@ public class Server{
                               Object temp = ois.readObject();
                               if(temp instanceof User) {
                                    setOrder((Order) temp);
-                                   receiveOrder();
+                                   acceptOrder(order);
                               }
                               else if(temp instanceof String){
                                    statusInfo(order.getStatus());

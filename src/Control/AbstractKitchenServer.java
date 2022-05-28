@@ -22,13 +22,13 @@ import java.util.concurrent.CompletableFuture;
      * Note that the methods should sleep for a random duration before it returns a status.
      * This is to simulate an actual server-call that might operate slowly.
      */
-   // abstract public CompletableFuture<KitchenStatus> receiveOrder(Order order) throws InterruptedException;
+   //abstract public CompletableFuture<KitchenStatus> receiveOrder(Order order) throws InterruptedException;
 
     /**
      * Note that the methods should sleep for a random duration before it returns a status.
      * This is to simulate an actual server-call that might operate slowly.
      */
-    //abstract public CompletableFuture<OrderStatus> checkStatus(String orderID) throws InterruptedException;
+    abstract public CompletableFuture<OrderStatus> checkStatus(String orderID) throws InterruptedException;
 
     /**
      * Allows a client to picks up the order if it is ready {@link OrderStatus#Ready}.
@@ -44,5 +44,5 @@ import java.util.concurrent.CompletableFuture;
      * Execute random delay and update the order status
      * {@link OrderStatus#Received} -> {@link OrderStatus#BeingPrepared} -> {@link OrderStatus#Ready}
      */
-    //abstract protected void cook(Order order);
+    abstract protected void cook(Order order);
 }
