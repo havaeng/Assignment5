@@ -8,67 +8,19 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Random;
 
-public class Client implements Runnable {
-     private Socket socket;
-     private ObjectInputStream ois;
-     private ObjectOutputStream oos;
+public class Client extends AbstractOrderClient implements Runnable{
      private Order order;
      private Controller controller;
-     private Object lock = new Object();
 
-     public Client(String ipAdress, int port, Controller controller){
-          try {
-               socket = new Socket(ipAdress, port);
-               oos = new ObjectOutputStream(socket.getOutputStream());
-               ois = new ObjectInputStream(socket.getInputStream());
-               this.controller = controller;
-               order = new Order();
-             //  new Thread(this).start(); // Hmm...
-          } catch (IOException e){
-               e.printStackTrace();
-          }
+     public Client(){
+
      }
+
 
     // @Override
      public void run() {
-          //oos.write();
-     }
-     /**
-      * Samma princip som submit order fast inte implementerade = egen metod
-      * Ska aktiveras när "Order"-knappen trycks, skickar ett user object till server som har en order
-      */
-     public void placeOrder() throws InterruptedException {
-          synchronized (lock) {
-               try {
-                    oos.writeObject(order);
-                    // oos.writeObject(order);
-                    oos.flush();
-                    sendUpdates();
-               } catch (IOException e) {
-                    e.printStackTrace();
-               }
-          }
      }
 
-     public void sendUpdates() throws InterruptedException, IOException {
-         while (order.getStatus() != OrderStatus.Served){
-             Random random = new Random();
-             Thread.sleep(random.nextInt(3000));
-             oos.writeObject("Update please");
-             oos.flush();
-         }
-         controller.enableAllButtons();
-     }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-     /*
     @Override
     public void submitOrder() {
 
@@ -82,39 +34,5 @@ public class Client implements Runnable {
     @Override
     protected void pickUpOrder() {
 
-    } */
-
-    class InputCommunicator extends Thread {
-          public void run(){
-               while (!Thread.interrupted()) {
-                   Object temp = null;
-                   try {
-                       temp = ois.readObject();
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   } catch (ClassNotFoundException e) {
-                       e.printStackTrace();
-                   }
-                   switch ((String) temp){
-                       case "Recieved" -> controller.updateStatusLog("Order #" +
-                                 order.getOrderID()
-                                 + " was received.");
-                       case "Prepared" -> controller.updateStatusLog("Order #" +
-                                 order.getOrderID() + " is being prepared.");
-                       case "Ready" -> controller.updateStatusLog("Order #" +
-                                 order.getOrderID() + " is ready!");
-                       case "Served" -> controller.updateStatusLog("Order #" +
-                                 order.getOrderID() + " has been served.");
-                   }
-               }
-          }
-     }
-
-     /*class OutputCommunicator extends Thread {
-          public void run(){
-               while (!Thread.interrupted()){
-                    //Nånting
-               }
-          }
-     } */
+    }
 }

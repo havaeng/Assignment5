@@ -1,9 +1,11 @@
 package Boundary;
 
 import Control.Controller;
+import Entity.OrderStatus;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class RestaurantGUI {
 
@@ -241,4 +243,26 @@ public class RestaurantGUI {
         menuItem2Button.setEnabled(true);
         menuItem1Button.setEnabled(true);
     }
+
+    public void statusInfo(OrderStatus status) { //Vill vi ha try catch?
+               String string;
+               switch (status){
+                    case Received -> {
+                         string = "Recieved";//"You order " + user.getCurrentOrder().getOrderID() + " is recived!";
+              //           oos.writeObject(string);
+                    }
+                    case BeingPrepared -> {
+                         string = "Prepared";//"Your order " + user.getCurrentOrder().getOrderID() + " is being prepared!";
+              //           oos.writeObject(string);
+                    }
+                    case Ready -> {
+                         string = "Ready";//"Your order " + user.getCurrentOrder().getOrderID() + " is ready!";
+               //          oos.writeObject(string);
+                    }
+                    case Served -> {
+                         string = "Served";//"Your picked up order " + user.getCurrentOrder().getOrderID();
+               //          oos.writeObject(string);
+                    }
+               }
+          }
 }

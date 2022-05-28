@@ -1,4 +1,4 @@
-package Control;
+package Entity;
 
 import Entity.Order;
 import Entity.OrderItem;
@@ -7,20 +7,20 @@ import Entity.OrderStatus;
 import java.util.Timer;
 
 public abstract class AbstractOrderClient {
- /*   private Order order;
+    private Order order;
     private AbstractKitchenServer kitchenServer;
     private Timer pollingTimer;
 
-  //  public void addItemToOrder(OrderItem item) {
-       // order.addOrderItem(item);
-   // }
+    public void addItemToOrder(OrderItem item) {
+        order.addOrderItem(item);
+    }
 
-   // public void removeItemToOrder(OrderItem item) {
-      //  order.removeOrderItem(item);
-   // }
+   public void removeItemToOrder(OrderItem item) {
+          order.removeOrderItem(item);
+    }
 
 
-    //abstract public void submitOrder();
+   abstract public void submitOrder();
 
     /**
      * Start a new task with a periodic timer {@link #pollingTimer}
@@ -28,10 +28,10 @@ public abstract class AbstractOrderClient {
      *
      * Call {@link #pickUpOrder()} when status is {@link OrderStatus#Ready} and stop the {@link #pollingTimer}.
      */
- //   abstract protected void startPollingServer(String orderId);
+      abstract protected void startPollingServer(String orderId);
 
     /**
      * Start an asynchronous request to {@link AbstractKitchenServer#serveOrder(String)}
      */
-  //  abstract protected void pickUpOrder();
+      abstract protected void pickUpOrder();
 }

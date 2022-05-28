@@ -4,42 +4,45 @@ import Boundary.*;
 import Entity.Client;
 import Entity.Order;
 import Entity.OrderItem;
+import Entity.Server;
 
 public class Controller {
     // private Order order = new Order();
      private OrderItem orderItem = new OrderItem();
      private RestaurantGUI gui;
+     private Server server;
      private Client client;
 
 
      public Controller(){
-          client = new Client("127.0.0.1", 20004, this);
+        //  client = new client(); // Hur startar man på clienten i runnable?
+         // server = new server(); // Hur startar man på servern i runnable?
           this.gui = new RestaurantGUI(this);
      }
 
      public void remove() {
           gui.clearOrder();
-          client.getOrder().clear();
+         // client.getOrder().clear();
      }
 
      public void placeOrder() throws InterruptedException {
           gui.clearOrder();
           //gui.disableAllButtons();
-          client.placeOrder();
+      //    client.placeOrder();
      }
 
      public void addToOrderList(String string) {
           switch (string){
                case "sandwich" -> {
-                    client.getOrder().addOrderItem(orderItem.sandwich());
+          //          client.getOrder().addOrderItem(orderItem.sandwich());
                     gui.updateOrderCart("Sandwich");
                }
                case "borscht" -> {
-                    client.getOrder().addOrderItem(orderItem.borscht());
+          //          client.getOrder().addOrderItem(orderItem.borscht());
                     gui.updateOrderCart("Borscht");
                }
                case "coffee" -> {
-                    client.getOrder().addOrderItem(orderItem.coffee());
+                //    client.getOrder().addOrderItem(orderItem.coffee());
                     gui.updateOrderCart("Coffee");
                }
           }
