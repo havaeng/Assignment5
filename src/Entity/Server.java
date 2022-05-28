@@ -69,7 +69,7 @@ public class Server{
                while (this.order == null) {
                     try {
                          Object order = ois.readObject();
-                         String test = (String) order;
+                         Order order1= (Order) order;
                     } catch (IOException | ClassNotFoundException e) {
                          e.printStackTrace();
                     }
