@@ -20,8 +20,8 @@ public abstract class AbstractKitchenServer {
 
     /**
      * This method should save the order to the map
-     * and return a confirmation that the order is received {@link KitchenStatus#Received}
-     * or a rejection {@link KitchenStatus#Rejected}
+     * and return a confirmation that the order is received
+     * or a rejection
      *
      * When an order is received, a {@link #cook(Order)} task should be launched in the {@link #threadPool}
      *
