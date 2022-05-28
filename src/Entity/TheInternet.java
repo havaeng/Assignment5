@@ -19,5 +19,13 @@ public class TheInternet /*Buffer*/ {
         Order order = orders.removeFirst();
         return order;
     }
+
+    public void sendRequest(String string){
+        requests.addLast(string);
+    }
+
+    public String getRequest(){
+        return requests.removeFirst();
+    }
 }
 
