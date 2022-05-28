@@ -1,73 +1,65 @@
 package Entity;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class Server extends AbstractKitchenServer implements Runnable{
+public class Server {
+     private List<User> userList;
      private ExecutorService threadPool;
+     private Map<String, Order> orderMap = new HashMap<>();
 
      public Server() {
-
+          threadPool = Executors.newFixedThreadPool(5);
+     }
+     private Runnable receiveOrder(Order order){
+          Runnable receiveOrder = () -> {
+               try {
+                    Random random = new Random();
+                    Thread.sleep(random.nextInt(1000,5000));
+               } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+               }
+               order.setStatus(OrderStatus.Received);
+               try {
+                    cook(order);
+               } catch (IOException e) {
+                    throw new RuntimeException(e);
+               }
+          };
+          return receiveOrder;
      }
 
-          private void serveOrder() throws IOException {
-       //        this.order.setStatus(OrderStatus.Ready);
-         //      statusInfo(order.getStatus());
+     private void cook(Order order) throws IOException {
+          try {
+               Random random = new Random();
+               Thread.sleep(random.nextInt(1000,5000));
+          } catch (InterruptedException e) {
+               e.printStackTrace();
           }
+          order.setStatus(OrderStatus.BeingPrepared);
+          serveOrder(order);
+     }
+
+
+     private void serveOrder(Order order) throws IOException {
+          try {
+               Random random = new Random();
+               Thread.sleep(random.nextInt(1000,5000));
+          } catch (InterruptedException e) {
+               e.printStackTrace();
+          }
+          order.setStatus(OrderStatus.Ready);
+     }
 
           public void setOrder(Order order) {
-        //       this.order = order;
+               this.order = order;
           }
-
-     @Override
-     public CompletableFuture<OrderStatus> receiveOrder(Order order) throws InterruptedException {
-          order.setStatus(OrderStatus.Received);
-          try {
-               Random random = new Random();
-               Thread.sleep(random.nextInt(5000));
-          } catch (InterruptedException e) {
-               e.printStackTrace();
-          }
-          cook(order);
-          return null;//OrderStatus.Received;
-     }
-
-     @Override
-     public CompletableFuture<OrderStatus> checkStatus(String orderID) throws InterruptedException {
-          return null;
-     }
-
-     @Override
-     public CompletableFuture<OrderStatus> serveOrder(String orderID) throws InterruptedException {
-          try {
-               Random random = new Random();
-               Thread.sleep(random.nextInt(2000));
-          } catch (InterruptedException e) {
-               e.printStackTrace();
-          }
-          return null;
-     }
-
-     @Override
-     protected void cook(Order order) {
-               order.setStatus(OrderStatus.BeingPrepared);
-          try {
-               Random random = new Random();
-               Thread.sleep(random.nextInt(6000));
-          } catch (InterruptedException e) {
-               e.printStackTrace();
-          }
-          try {
-               serveOrder(order.getOrderID());
-          } catch (InterruptedException e) {
-               e.printStackTrace();
-          }
-     }
-
-     @Override
-     public void run() {
-
      }
 }
