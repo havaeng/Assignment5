@@ -165,7 +165,7 @@ public class RestaurantGUI {
         //**************************
         //*** Entity.Order cart  ***
         //**************************
-        labelOrder = new JLabel("Entity.Order");
+        labelOrder = new JLabel("Order cart");
         labelOrder.setBounds(340, 10, 128, 13);
         frame.add(labelOrder);
 
@@ -173,8 +173,8 @@ public class RestaurantGUI {
         orderCartArea = new JList<String>(orderCartModel);
         orderCartArea.setBounds(340, 35, 250, 250);
         orderCartArea.setBorder(BorderFactory.createLineBorder(Color.black));
-        orderCartModel.addElement("Sandwich");
-        orderCartModel.addElement("Coffee");
+        //orderCartModel.addElement("Sandwich");
+        //orderCartModel.addElement("Coffee");
         frame.add(orderCartArea);
 
         orderRemoveButton = new JButton();
@@ -208,8 +208,8 @@ public class RestaurantGUI {
         orderStatusArea = new JList<String>(orderStatusModel);
         orderStatusArea.setBounds(620, 35, 250, 335);
         orderStatusArea.setBorder(BorderFactory.createLineBorder(Color.black));
-        orderStatusModel.addElement("19:02:03 Entity.Order submitted");
-        orderStatusModel.addElement("19:02:05 Entity.Order accepted");
+        //orderStatusModel.addElement("19:02:03 Entity.Order submitted");
+        //orderStatusModel.addElement("19:02:05 Entity.Order accepted");
         frame.add(orderStatusArea);
 
     }

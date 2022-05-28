@@ -1,20 +1,19 @@
 package Entity;
 
-import Control.Controller;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.StreamCorruptedException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server{
      private ServerSocket serverSocket;
      private List<User> userList;
+     private ExecutorService threadPool;
 
      public Server(int port) {
           try {
@@ -22,6 +21,7 @@ public class Server{
           } catch (IOException e) {
                e.printStackTrace();
           }
+          threadPool = Executors.newFixedThreadPool(5);
           new Thread(new Connection()).start();
      }
 
@@ -65,25 +65,25 @@ public class Server{
            * Inputhandler will hämta fler ordrar/status req från användaren
            */
           @Override
-          public void run() {
+          public synchronized void run() {
                while (this.order == null) {
                     try {
-                         Object order = ois.readObject();
-                         String test = (String) order;
+                         Object temp = ois.readObject();
+                         this.order = (Order) temp;
                     } catch (IOException | ClassNotFoundException e) {
                          e.printStackTrace();
                     }
                }
 
                try {
-                    recieveOrder();
+                    receiveOrder();
                } catch (IOException e) {
                     e.printStackTrace();
                }
                new Thread(new InputHandler()).start();
           }
 
-          private void recieveOrder() throws IOException {
+          private void receiveOrder() throws IOException {
                System.out.println("Successfully stored the user/order!");
                this.order.setStatus(OrderStatus.Received);
                statusInfo(order.getStatus());
@@ -141,13 +141,13 @@ public class Server{
 
           private class InputHandler implements Runnable {
                @Override
-               public void run() {
+               public synchronized void run() {
                     while (!Thread.interrupted()) {
                          try {
                               Object temp = ois.readObject();
                               if(temp instanceof User) {
                                    setOrder((Order) temp);
-                                   recieveOrder();
+                                   receiveOrder();
                               }
                               else if(temp instanceof String){
                                    statusInfo(order.getStatus());

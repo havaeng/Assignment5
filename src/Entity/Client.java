@@ -14,6 +14,7 @@ public class Client implements Runnable {
      private ObjectOutputStream oos;
      private Order order;
      private Controller controller;
+     private Object lock = new Object();
 
      public Client(String ipAdress, int port, Controller controller){
           try {
@@ -37,15 +38,16 @@ public class Client implements Runnable {
       * Ska aktiveras när "Order"-knappen trycks, skickar ett user object till server som har en order
       */
      public void placeOrder() throws InterruptedException {
-         try {
-             String hallo = "Hallo";
-             oos.writeObject(hallo);
-            // oos.writeObject(order);
-             oos.flush();
-             sendUpdates();
-         } catch (IOException e) {
-             e.printStackTrace();
-         }
+          synchronized (lock) {
+               try {
+                    oos.writeObject(order);
+                    // oos.writeObject(order);
+                    oos.flush();
+                    sendUpdates();
+               } catch (IOException e) {
+                    e.printStackTrace();
+               }
+          }
      }
 
      public void sendUpdates() throws InterruptedException, IOException {
