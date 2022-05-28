@@ -1,10 +1,6 @@
 package Entity;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +8,26 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server {
+public class Server implements Runnable {
      private List<User> userList;
      private ExecutorService threadPool;
+     private TheInternet buffer;
      private Map<String, Order> orderMap = new HashMap<>();
 
-     public Server() {
+     public Server(TheInternet buffer) {
+          this.buffer = buffer;
           threadPool = Executors.newFixedThreadPool(5);
+     }
+     @Override
+     public void run(){
+          while (true){
+               try {
+                    Order order = buffer.receiveOrder();
+                    acceptOrder(order);
+               } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+               }
+          }
      }
 
      private void acceptOrder(Order order){

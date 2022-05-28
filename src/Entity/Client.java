@@ -1,40 +1,34 @@
 package Entity;
 
-import Control.Controller;
-
-public class Client extends AbstractOrderClient implements Runnable{
+public class Client {
      private Order order;
-     private Controller controller;
-     private BoundedBuffer buffer;
+     private TheInternet buffer;
 
-     public Client(){
-
+     public Client(TheInternet buffer) {
+          this.buffer = buffer;
+          order = new Order();
      }
 
-
-    // @Override
-     public void run() {
-          while (order == null){
-               buffer.recieveOrder()
-          }
-     }
-
-    @Override
-    public void submitOrder(Order order) {
+     public void submitOrder() {
           try {
-               buffer.submitOrder(order);
-          } catch (InterruptedException e){
+               if (!order.getOrderList().isEmpty()) {
+                    buffer.submitOrder(order);
+                    System.out.println("Order submitted.");
+               }
+          } catch (InterruptedException e) {
                e.printStackTrace();
           }
-    }
+     }
 
-    @Override
-    protected void startPollingServer(String orderId) {
+     protected void startPollingServer(String orderId) {
 
-    }
+     }
 
-    @Override
-    protected void pickUpOrder() {
+     protected void pickUpOrder() {
 
-    }
+     }
+
+     public Order getOrder() {
+          return order;
+     }
 }

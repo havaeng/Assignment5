@@ -5,19 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Order implements Serializable {
-    private static final long serialVersionUID = 4L; // this??
+public class Order {
     private String orderID;
     private List<OrderItem> orderList;
     private boolean sent;
     private boolean done;
     private OrderStatus status = OrderStatus.NotSent;
-    private int nextOrderID = 1;
+    private static int nextOrderID = 1;
 
     public Order() {
        this.orderID = String.valueOf(nextOrderID);
        nextOrderID++;
-       this.orderID = UUID.randomUUID().toString();
        orderList = new ArrayList<>();
     }
 

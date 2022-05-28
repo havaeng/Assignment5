@@ -1,23 +1,23 @@
 package Control;
 
 import Boundary.*;
-import Entity.Client;
-import Entity.Order;
-import Entity.OrderItem;
-import Entity.Server;
+import Entity.*;
 
 public class Controller {
     // private Order order = new Order();
      private OrderItem orderItem = new OrderItem();
      private RestaurantGUI gui;
      private Server server;
-     private Client client;
+     private Client client, client2;
+     private TheInternet buffer;
 
 
      public Controller(){
-        //  client = new client(); // Hur startar man på clienten i runnable?
-         // server = new server(); // Hur startar man på servern i runnable?
-          this.gui = new RestaurantGUI(this);
+          gui = new RestaurantGUI(this);
+          buffer = new TheInternet();
+          client = new Client(buffer);
+          //client2 = new Client(buffer)
+          server = new Server(buffer);
      }
 
      public void remove() {
@@ -27,14 +27,14 @@ public class Controller {
 
      public void placeOrder() throws InterruptedException {
           gui.clearOrder();
-          //gui.disableAllButtons();
-      //    client.placeOrder();
+          gui.disableAllButtons();
+          client.submitOrder();
      }
 
      public void addToOrderList(String string) {
           switch (string){
                case "sandwich" -> {
-          //          client.getOrder().addOrderItem(orderItem.sandwich());
+                    client.getOrder().addOrderItem(orderItem.sandwich());
                     gui.updateOrderCart("Sandwich");
                }
                case "borscht" -> {
