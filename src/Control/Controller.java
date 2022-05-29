@@ -26,9 +26,9 @@ public class Controller {
      }
 
      public void placeOrder() throws InterruptedException {
-          System.out.println("Order placed in controller");
+          System.out.println("Tried to place order (Controller)");
           gui.clearOrder();
-          gui.disableAllButtons();
+          //gui.disableAllButtons();
           client.submitOrder();
      }
 
@@ -39,11 +39,11 @@ public class Controller {
                     gui.updateOrderCart("Sandwich");
                }
                case "borscht" -> {
-          //          client.getOrder().addOrderItem(orderItem.borscht());
+                    client.getOrder().addOrderItem(orderItem.borscht());
                     gui.updateOrderCart("Borscht");
                }
                case "coffee" -> {
-                //    client.getOrder().addOrderItem(orderItem.coffee());
+                    client.getOrder().addOrderItem(orderItem.coffee());
                     gui.updateOrderCart("Coffee");
                }
           }

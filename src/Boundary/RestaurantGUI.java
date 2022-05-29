@@ -226,6 +226,7 @@ public class RestaurantGUI {
 
     public void clearOrder(){
         orderCartModel.clear();
+        System.out.println("Order cart cleared.");
     }
 
     public void disableAllButtons(){

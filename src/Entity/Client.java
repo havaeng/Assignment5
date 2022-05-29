@@ -1,5 +1,7 @@
 package Entity;
 
+import javax.swing.*;
+
 public class Client {
      private Order order;
      private TheInternet buffer;
@@ -14,6 +16,12 @@ public class Client {
                if (!order.getOrderList().isEmpty()) {
                     buffer.submitOrder(order);
                     System.out.println("Order submitted.");
+               } else if (order.getOrderList().isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                              null,
+                              "Order is empty. Try again.",
+                              "Warning", JOptionPane.WARNING_MESSAGE,
+                              null);
                }
           } catch (InterruptedException e) {
                e.printStackTrace();
