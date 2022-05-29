@@ -13,7 +13,6 @@ public class ServerController extends AbstractKitchenServer {
 
     @Override
     public CompletableFuture<OrderStatus> receiveOrder(Order order) throws InterruptedException {
-        System.out.println("Order " + order.getOrderID() + "got recieved");
         CompletableFuture<OrderStatus> completableFuture = CompletableFuture.supplyAsync(() -> {
             try {
                 Thread.sleep(4000);
@@ -44,7 +43,6 @@ public class ServerController extends AbstractKitchenServer {
 
     @Override
     public CompletableFuture<OrderStatus> serveOrder(String orderID) throws InterruptedException {
-        System.out.println("Order " + orderID + " ready and served");
         CompletableFuture<OrderStatus> completableFuture = CompletableFuture.supplyAsync(() -> {
             Order order = orderMap.get(orderID);
             order.setStatus(OrderStatus.Ready);
@@ -55,7 +53,6 @@ public class ServerController extends AbstractKitchenServer {
 
     @Override
     protected void cook(Order order) {
-        System.out.println("Order " + order.getOrderID() + " getting cooked");
         order.setStatus(OrderStatus.BeingPrepared);
         try {
             Thread.sleep(5000);

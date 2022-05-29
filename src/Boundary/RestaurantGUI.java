@@ -190,11 +190,7 @@ public class RestaurantGUI {
         orderSubmitButton.setBounds(490, 300, 100, 30);
         orderSubmitButton.setText("Place order");
         orderSubmitButton.addActionListener(l -> {
-            try {
                 controller.submitOrder();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         });
         frame.add(orderSubmitButton);
 
@@ -219,8 +215,26 @@ public class RestaurantGUI {
         orderCartModel.addElement(string);
     }
 
-    public void updateStatusLog(String string) {
-        orderStatusModel.addElement(string);
+    public void updateStatusLog(String status, String orderId) {
+        String string;
+        switch (status){
+            case "Preparing...":
+                string = "Order#" + orderId + " is " + status;
+                orderStatusModel.addElement(string);
+                break;
+            case "Received!":
+                string = "Order#" + orderId + " is" + status;
+                orderStatusModel.addElement(string);
+                break;
+            case "Ready!":
+                string = "Order#" + orderId + " is" + status;
+                orderStatusModel.addElement(string);
+                break;
+            case "Served.":
+                string = "Order#" + orderId + " is" + status;
+                orderStatusModel.addElement(string);
+                break;
+        }
     }
 
     public void clearOrder(){
