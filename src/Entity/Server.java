@@ -49,14 +49,15 @@ public class Server implements Runnable {
                }
                order.setStatus(OrderStatus.Received);
                try {
-                    cook(order);
+                    threadPool.submit(cook(order));
+                    //cook(order);
                } catch (IOException e) {
                     throw new RuntimeException(e);
                }
           };
           return receiveOrder;
      }
-
+     /*
      private void cook(Order order) throws IOException {
           try {
                Random random = new Random();
@@ -67,8 +68,28 @@ public class Server implements Runnable {
           order.setStatus(OrderStatus.BeingPrepared);
           serveOrder(order);
      }
+     */
 
+     private Runnable cook(Order order) throws IOException {
+          Runnable cook = () -> {
+               try {
+                    Random random = new Random();
+                    Thread.sleep(random.nextInt(1000, 5000));
+               } catch (InterruptedException e) {
+                    e.printStackTrace();
+               }
+               order.setStatus(OrderStatus.BeingPrepared);
+               try {
+                    threadPool.submit(serveOrder(order));
+                    //serveOrder(order);
+               } catch (IOException e) {
+                    throw new RuntimeException(e);
+               }
+          };
+          return cook;
+     }
 
+     /*
      private void serveOrder(Order order) throws IOException {
           try {
                Random random = new Random();
@@ -77,5 +98,19 @@ public class Server implements Runnable {
                e.printStackTrace();
           }
           order.setStatus(OrderStatus.Ready);
+     }
+     */
+
+     private Runnable serveOrder(Order order) throws IOException {
+          Runnable serveOrder = () -> {
+               try {
+                    Random random = new Random();
+                    Thread.sleep(random.nextInt(1000,5000));
+               } catch (InterruptedException e) {
+                    e.printStackTrace();
+               }
+               order.setStatus(OrderStatus.Ready);
+          };
+          return serveOrder;
      }
 }
