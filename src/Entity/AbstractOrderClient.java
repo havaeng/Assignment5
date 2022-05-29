@@ -11,7 +11,7 @@ public abstract class AbstractOrderClient {
     private AbstractKitchenServer kitchenServer;
     private Timer pollingTimer;
 
-     public abstract void submitOrder(Order order);
+     public abstract void submitOrder();
 
      /**
      * Start a new task with a periodic timer {@link #pollingTimer}

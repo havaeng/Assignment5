@@ -19,8 +19,16 @@ public class ClientController extends AbstractOrderClient{
      }
 
      @Override
-     public void submitOrder(Order order) {
-
+     public void submitOrder() {
+          try {
+               if (!order.getOrderList().isEmpty()) {
+                    buffer.submitOrder(order);
+                    System.out.println("Order submitted.");
+               }
+          } catch (InterruptedException e) {
+               e.printStackTrace();
+          }
+     }
      }
 
      @Override
