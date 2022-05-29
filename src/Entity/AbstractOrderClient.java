@@ -1,9 +1,5 @@
 package Entity;
 
-import Entity.Order;
-import Entity.OrderItem;
-import Entity.OrderStatus;
-
 import java.util.Timer;
 
 public abstract class AbstractOrderClient {

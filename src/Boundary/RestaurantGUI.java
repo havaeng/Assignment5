@@ -1,12 +1,10 @@
 package Boundary;
 
-import Control.Controller;
-import Entity.ClientController;
+import Control.ClientController;
 import Entity.OrderStatus;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 public class RestaurantGUI {
 
@@ -195,7 +193,7 @@ public class RestaurantGUI {
             try {
                 controller.submitOrder();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         });
         frame.add(orderSubmitButton);
