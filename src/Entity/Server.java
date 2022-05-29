@@ -2,39 +2,51 @@ package Entity;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server implements Runnable {
-     private List<User> userList;
+public class Server extends AbstractKitchenServer {
      private ExecutorService threadPool;
-     private CompletableFuture<Object> completableFuture;
-     private TheInternet buffer;
+     private CompletableFuture<OrderStatus> completableFuture;
      private Map<String, Order> orderMap = new HashMap<>();
 
-     public Server(TheInternet buffer) {
-          this.buffer = buffer;
+     public Server() {
           threadPool = Executors.newFixedThreadPool(5);
-          completableFuture = new CompletableFuture<>();
      }
-     @Override
-     public void run(){
-          while (true){
-               try {
-                    Order order = buffer.receiveOrder();
-                    if (!(order == null)) {
-                         //receiveOrder(order);
-                         //acceptOrder(order);
-                         System.out.println("Order received by server");
-                    }
-               } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-               }
-          }
+
+     public CompletableFuture<OrderStatus> receiveOrder(Order order) throws InterruptedException, IOException {
+          Thread.sleep(1500);
+          completableFuture = CompletableFuture.supplyAsync(() -> order.getStatus());
+          orderMap.put(order.getOrderID(), order);
+          order.setStatus(OrderStatus.Received);
+          cook(order);
+          return completableFuture;
+     }
+
+     public CompletableFuture<OrderStatus> checkStatus(String orderID) throws InterruptedException {
+          Thread.sleep(1500);
+          completableFuture = CompletableFuture.supplyAsync(() -> {
+               Order order = orderMap.get(orderID);
+               return order.getStatus();
+          });
+          return completableFuture;
+     }
+
+     public CompletableFuture<OrderStatus> serveOrder(String orderID) throws InterruptedException {
+          completableFuture = CompletableFuture.supplyAsync(() -> {
+             Order order = orderMap.get(orderID);
+             order.setStatus(OrderStatus.Ready);
+             return order.getStatus();
+          });
+          return completableFuture;
+     }
+
+     protected void cook(Order order) throws InterruptedException {
+          Thread.sleep(1500);
+          order.setStatus(OrderStatus.BeingPrepared);
+          serveOrder(order.getOrderID());
      }
 
      /*
@@ -99,6 +111,7 @@ public class Server implements Runnable {
      */
 
 
+     /*
      private void cook(Order order) throws IOException {
           try {
                Random random = new Random();
@@ -109,6 +122,7 @@ public class Server implements Runnable {
           order.setStatus(OrderStatus.BeingPrepared);
           serveOrder(order);
      }
+     */
 
 
      /*
@@ -134,7 +148,7 @@ public class Server implements Runnable {
 
 
 
-
+/*
      private void serveOrder(Order order) throws IOException {
           try {
                Random random = new Random();
@@ -144,7 +158,7 @@ public class Server implements Runnable {
           }
           order.setStatus(OrderStatus.Ready);
      }
-
+     */
 
      /*
      private Runnable serveOrder(Order order) throws IOException {

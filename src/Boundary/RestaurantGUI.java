@@ -1,10 +1,11 @@
 package Boundary;
 
-import Entity.ClientController;
+import Control.Controller;
 import Entity.OrderStatus;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class RestaurantGUI {
 
@@ -40,9 +41,9 @@ public class RestaurantGUI {
     DefaultListModel<String> orderStatusModel;   // Stores a list of string that is displayed at orderStatusArea
     JList<String> orderStatusArea;               // To display status of the submitted order
 
-    private ClientController controller;
+    private Controller controller;
 
-    public RestaurantGUI(ClientController controller){
+    public RestaurantGUI(Controller controller){
         this.controller = controller;
         start();
     }
@@ -191,9 +192,9 @@ public class RestaurantGUI {
         orderSubmitButton.setText("Place order");
         orderSubmitButton.addActionListener(l -> {
             try {
-                controller.submitOrder();
+                controller.placeOrder();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         });
         frame.add(orderSubmitButton);
@@ -245,24 +246,24 @@ public class RestaurantGUI {
     }
 
     public void statusInfo(OrderStatus status) { //Vill vi ha try catch?
-               String string;
-               switch (status){
-                    case Received -> {
-                         string = "Recieved";//"You order " + user.getCurrentOrder().getOrderID() + " is recived!";
-              //           oos.writeObject(string);
-                    }
-                    case BeingPrepared -> {
-                         string = "Prepared";//"Your order " + user.getCurrentOrder().getOrderID() + " is being prepared!";
-              //           oos.writeObject(string);
-                    }
-                    case Ready -> {
-                         string = "Ready";//"Your order " + user.getCurrentOrder().getOrderID() + " is ready!";
-               //          oos.writeObject(string);
-                    }
-                    case Served -> {
-                         string = "Served";//"Your picked up order " + user.getCurrentOrder().getOrderID();
-               //          oos.writeObject(string);
-                    }
-               }
-          }
+        String string;
+        switch (status){
+            case Received -> {
+                string = "Recieved";//"You order " + user.getCurrentOrder().getOrderID() + " is recived!";
+                //           oos.writeObject(string);
+            }
+            case BeingPrepared -> {
+                string = "Prepared";//"Your order " + user.getCurrentOrder().getOrderID() + " is being prepared!";
+                //           oos.writeObject(string);
+            }
+            case Ready -> {
+                string = "Ready";//"Your order " + user.getCurrentOrder().getOrderID() + " is ready!";
+                //          oos.writeObject(string);
+            }
+            case Served -> {
+                string = "Served";//"Your picked up order " + user.getCurrentOrder().getOrderID();
+                //          oos.writeObject(string);
+            }
+        }
+    }
 }

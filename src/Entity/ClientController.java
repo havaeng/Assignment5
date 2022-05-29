@@ -1,7 +1,6 @@
 package Entity;
 
 import Boundary.RestaurantGUI;
-import Entity.*;
 
 import java.util.ArrayList;
 import java.util.List;

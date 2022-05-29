@@ -9,15 +9,13 @@ public class Controller {
      private RestaurantGUI gui;
      private Server server;
      private Client client, client2;
-     private TheInternet buffer;
 
 
      public Controller(){
           gui = new RestaurantGUI(this);
-          buffer = new TheInternet();
-          client = new Client(buffer);
+          client = new Client(this);
           //client2 = new Client(buffer)
-          server = new Server(buffer);
+          server = new Server();
      }
 
      public void remove() {
