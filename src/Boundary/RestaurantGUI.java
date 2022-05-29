@@ -193,7 +193,7 @@ public class RestaurantGUI {
         orderSubmitButton.setText("Place order");
         orderSubmitButton.addActionListener(l -> {
             try {
-                controller.placeOrder();
+                controller.submitOrder();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
