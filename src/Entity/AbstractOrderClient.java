@@ -1,9 +1,5 @@
 package Entity;
 
-import Entity.Order;
-import Entity.OrderItem;
-import Entity.OrderStatus;
-
 import java.util.Timer;
 
 public abstract class AbstractOrderClient {
@@ -11,18 +7,7 @@ public abstract class AbstractOrderClient {
     private AbstractKitchenServer kitchenServer;
     private Timer pollingTimer;
 
-    public void addItemToOrder(OrderItem item) {
-        order.addOrderItem(item);
-    }
-
-   public void removeItemToOrder(OrderItem item) {
-          order.removeOrderItem(item);
-    }
-
-
-   abstract public void submitOrder();
-
-     public abstract void submitOrder(Order order);
+     public abstract void submitOrder();
 
      /**
      * Start a new task with a periodic timer {@link #pollingTimer}
