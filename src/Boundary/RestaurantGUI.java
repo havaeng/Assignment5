@@ -1,6 +1,7 @@
 package Boundary;
 
 import Control.Controller;
+import Entity.ClientController;
 import Entity.OrderStatus;
 
 import javax.swing.*;
@@ -41,9 +42,9 @@ public class RestaurantGUI {
     DefaultListModel<String> orderStatusModel;   // Stores a list of string that is displayed at orderStatusArea
     JList<String> orderStatusArea;               // To display status of the submitted order
 
-    private Controller controller;
+    private ClientController controller;
 
-    public RestaurantGUI(Controller controller){
+    public RestaurantGUI(ClientController controller){
         this.controller = controller;
         start();
     }

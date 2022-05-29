@@ -11,17 +11,6 @@ public abstract class AbstractOrderClient {
     private AbstractKitchenServer kitchenServer;
     private Timer pollingTimer;
 
-    public void addItemToOrder(OrderItem item) {
-        order.addOrderItem(item);
-    }
-
-   public void removeItemToOrder(OrderItem item) {
-          order.removeOrderItem(item);
-    }
-
-
-   abstract public void submitOrder();
-
      public abstract void submitOrder(Order order);
 
      /**
