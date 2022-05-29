@@ -1,6 +1,6 @@
 package Boundary;
 
-import Control.ClientController;
+import Entity.ClientController;
 import Entity.OrderStatus;
 
 import javax.swing.*;

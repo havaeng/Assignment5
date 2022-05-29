@@ -1,10 +1,7 @@
-package Control;
+package Entity;
 
 import Boundary.RestaurantGUI;
-import Entity.AbstractOrderClient;
-import Entity.Order;
-import Entity.OrderItem;
-import Entity.OrderStatus;
+import Entity.*;
 
 import java.util.ArrayList;
 import java.util.List;

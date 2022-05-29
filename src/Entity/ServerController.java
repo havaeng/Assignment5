@@ -1,4 +1,4 @@
-package Control;
+package Entity;
 
 import Entity.AbstractKitchenServer;
 import Entity.Order;
