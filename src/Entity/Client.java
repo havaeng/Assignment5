@@ -6,6 +6,7 @@ import Control.Controller;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -17,12 +18,15 @@ public class Client extends AbstractOrderClient{
      private List<Order> orders = new ArrayList<>();
      private OrderItem orderItem = new OrderItem();
      private Buffer buffer;
+     private Controller controller;
 
-     public Client(Server server, Controller controller, Buffer buffer) {
+     public Client(Server server, Buffer buffer, RestaurantGUI gui, Controller controller) {
           this.server = server;
           this.buffer = buffer;
-          gui = new RestaurantGUI(controller);
+          this.gui = gui;
+          this.controller = controller;
           order = new Order();
+          timer = new Timer();
      }
 
      public void submitOrder() {
@@ -31,7 +35,7 @@ public class Client extends AbstractOrderClient{
                //server.receiveOrder(order).thenAccept(orderStatus -> gui.updateStatusLog(orderStatus.text));
                startPollingServer(order.getOrderID());
                orders.add(order);
-               gui.clearOrder();
+               controller.remove();
                order = new Order();
           } else if (order.getOrderList().isEmpty()) {
                JOptionPane.showMessageDialog(
@@ -43,31 +47,28 @@ public class Client extends AbstractOrderClient{
      }
 
      @Override
-     protected void startPollingServer(String orderId) {
-          /*
-          TimerTask task = () -> {
-               try {
-                    server.checkStatus(orderId).thenAccept(orderStatus -> gui.updateStatusLog(orderStatus.text));
-                    if (string == OrderStatus.Ready){
-                         pickUpOrder();
-                         timer.cancel();
+     protected void startPollingServer(String orderID) {
+          TimerTask task = new TimerTask() {
+               @Override
+               public void run() {
+                    try {
+                         OrderStatus orderStatus = server.checkStatus(orderID);
+                         controller.updateStatusLog(String.valueOf(orderStatus));
+                         if (orderStatus == OrderStatus.Ready){
+                              pickUpOrder();
+
+                         }
+                    } catch (InterruptedException e){
+                         e.printStackTrace();
                     }
-               } catch (InterruptedException e){
-                    e.printStackTrace();
                }
           };
-          Timer timer = new Timer("Timer");
-          long delay = 1000L;
-          timer.schedule(task, delay);
-
-           */
+          timer.scheduleAtFixedRate(task, 0, 750);
      }
 
      protected void pickUpOrder() {
-          while (order.isDone()) {
-               System.out.println("Order is picked up.");
-               break;
-          }
+          timer.cancel();
+          gui.updateStatusLog("Order is picked up.");
      }
 
      public Order getOrder() {

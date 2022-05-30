@@ -10,66 +10,68 @@ import java.util.concurrent.Executors;
 public class Server extends AbstractKitchenServer implements Runnable{
      private ExecutorService threadPool;
      private CompletableFuture<OrderStatus> completableFuture;
-     private Map<String, Order> orderMap = new HashMap<>();
+     private Map<String, Order> orderMap;
      private Buffer buffer;
 
      public Server(Buffer buffer) {
           threadPool = Executors.newFixedThreadPool(5);
           this.buffer = buffer;
+          orderMap = new HashMap<>();
           new Thread(this).start();
      }
 
      @Override
      public void run() {
-          while (!buffer.isEmpty()){
-               CompletableFuture.supplyAsync(() -> {
-                    try {
-                         return receiveOrder(buffer.get());
-                    } catch (InterruptedException | IOException e) {
-                         throw new RuntimeException(e);
-                    }
-               }, threadPool).thenAccept(o -> {
-                    try {
-                         cook(o);
-                    } catch (InterruptedException e) {
-                         throw new RuntimeException(e);
-                    }
-               });
+          while (true) {
+               while (!buffer.isEmpty()) {
+                    CompletableFuture.supplyAsync(() -> {
+                         try {
+                              return receiveOrder();
+                         } catch (InterruptedException | IOException e) {
+                              throw new RuntimeException(e);
+                         }
+                    }, threadPool).thenApplyAsync(o -> {
+                         try {
+                              return cook(o);
+                         } catch (InterruptedException e) {
+                              throw new RuntimeException(e);
+                         }
+                    }, threadPool).thenAcceptAsync(o -> serveOrder(o), threadPool);
+               }
           }
      }
 
 
-     public Order receiveOrder(Order order) throws InterruptedException, IOException {
-          Thread.sleep(1500);
-          completableFuture = CompletableFuture.supplyAsync(() -> order.getStatus(), threadPool);
+     public Order receiveOrder() throws InterruptedException, IOException {
+          Order order = buffer.get();
+          System.out.println("Receive order");
           orderMap.put(order.getOrderID(), order);
+          System.out.println(orderMap.size());
           order.setStatus(OrderStatus.Received);
-          cook(order);
+          Thread.sleep(1500);
           return order;
      }
 
-     public CompletableFuture<OrderStatus> checkStatus(String orderID) throws InterruptedException {
-          Thread.sleep(1500);
-          completableFuture = CompletableFuture.supplyAsync(() -> {
+     public OrderStatus checkStatus(String orderID) throws InterruptedException {
+          //System.out.println(orderID);
+          //System.out.println(orderMap.size());
+          if (orderMap.containsKey(orderID)){
                Order order = orderMap.get(orderID);
                return order.getStatus();
-          });
-          return completableFuture;
+          }
+          return OrderStatus.NotFound;
      }
 
-     public CompletableFuture<OrderStatus> serveOrder(String orderID) throws InterruptedException {
-          completableFuture = CompletableFuture.supplyAsync(() -> {
-             Order order = orderMap.get(orderID);
+     public void serveOrder(Order order) {
              order.setStatus(OrderStatus.Ready);
-             return order.getStatus();
-          });
-          return completableFuture;
+             order.setDone(true);
      }
 
-     public void cook(Order order) throws InterruptedException {
-          Thread.sleep(1500);
+     public Order cook(Order order) throws InterruptedException {
           order.setStatus(OrderStatus.BeingPrepared);
-          serveOrder(order.getOrderID());
+         // serveOrder(order.getOrderID());
+          Thread.sleep(3000);
+          return order;
      }
 
      /*

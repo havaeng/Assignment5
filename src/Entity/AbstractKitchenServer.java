@@ -35,7 +35,7 @@ public abstract class AbstractKitchenServer {
      * Note that the methods should sleep for a random duration before it returns a status.
      * This is to simulate an actual server-call that might operate slowly.
      */
-    abstract public CompletableFuture<OrderStatus> checkStatus(String orderID) throws InterruptedException;
+    //abstract public CompletableFuture<OrderStatus> checkStatus(String orderID) throws InterruptedException;
 
     /**
      * Allows a client to picks up the order if it is ready {@link OrderStatus#Ready}.
@@ -44,7 +44,7 @@ public abstract class AbstractKitchenServer {
      * Note that the methods should sleep for a random duration before it returns a status.
      * This is to simulate an actual server-call that might operate slowly.
      */
-    abstract public CompletableFuture<OrderStatus> serveOrder(String orderID) throws InterruptedException;
+    //abstract public CompletableFuture<OrderStatus> serveOrder(String orderID) throws InterruptedException;
 
     /**
      * Simulate cooking in this method.

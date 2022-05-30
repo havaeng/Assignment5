@@ -16,7 +16,7 @@ public class Controller {
           buffer = new Buffer();
           gui = new RestaurantGUI(this);
           server = new Server(buffer);
-          client = new Client(server,this, buffer);
+          client = new Client(server, buffer, gui, this);
           //client2 = new Client(buffer)
      }
 
@@ -27,9 +27,9 @@ public class Controller {
 
      public void placeOrder() throws InterruptedException {
           System.out.println("Tried to place order (Controller)");
-          gui.clearOrder();
           //gui.disableAllButtons();
           client.submitOrder();
+          gui.clearOrder();
      }
 
      public void addToOrderList(String string) {

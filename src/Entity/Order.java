@@ -2,6 +2,7 @@ package Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Order {
     private String orderID;
@@ -9,11 +10,9 @@ public class Order {
     private boolean sent;
     private boolean done;
     private OrderStatus status = OrderStatus.NotSent;
-    private static int nextOrderID = 1;
 
     public Order() {
-       this.orderID = String.valueOf(nextOrderID);
-       nextOrderID++;
+       this.orderID = UUID.randomUUID().toString();
        orderList = new ArrayList<>();
     }
 
