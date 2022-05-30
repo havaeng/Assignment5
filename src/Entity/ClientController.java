@@ -1,4 +1,4 @@
-package Entity;
+/*package Entity;
 
 import Boundary.RestaurantGUI;
 
@@ -84,3 +84,5 @@ public class ClientController extends AbstractOrderClient {
           order.clear();
      }
 }
+
+ */

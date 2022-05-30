@@ -10,42 +10,41 @@ import java.util.List;
 import java.util.TimerTask;
 
 public class Client extends AbstractOrderClient{
-     private Order order;
-     private Server server;
      private Timer timer;
+     private Server server;
      private RestaurantGUI gui;
+     private Order order;
      private List<Order> orders = new ArrayList<>();
      private OrderItem orderItem = new OrderItem();
+     private Buffer buffer;
 
-     public Client(Server server, Controller controller) {
+     public Client(Server server, Controller controller, Buffer buffer) {
           this.server = server;
+          this.buffer = buffer;
           gui = new RestaurantGUI(controller);
           order = new Order();
      }
 
      public void submitOrder() {
-          try {
-               if (!order.getOrderList().isEmpty()) {
-                    server.receiveOrder(order).thenAccept(orderStatus -> gui.updateStatusLog(orderStatus.text));
-                    startPollingServer(order.getOrderID());
-                    orders.add(order);
-                    gui.clearOrder();
-                    order = new Order();
-               } else if (order.getOrderList().isEmpty()) {
-                    JOptionPane.showMessageDialog(
-                              null,
-                              "Order is empty. Try again.",
-                              "Warning", JOptionPane.WARNING_MESSAGE,
-                              null);
-               }
-          } catch (InterruptedException e) {
-               e.printStackTrace();
-          } catch (IOException e) {
-               throw new RuntimeException(e);
+          if (!order.getOrderList().isEmpty()) {
+               buffer.put(order);
+               //server.receiveOrder(order).thenAccept(orderStatus -> gui.updateStatusLog(orderStatus.text));
+               startPollingServer(order.getOrderID());
+               orders.add(order);
+               gui.clearOrder();
+               order = new Order();
+          } else if (order.getOrderList().isEmpty()) {
+               JOptionPane.showMessageDialog(
+                         null,
+                         "Order is empty. Try again.",
+                         "Warning", JOptionPane.WARNING_MESSAGE,
+                         null);
           }
      }
 
+     @Override
      protected void startPollingServer(String orderId) {
+          /*
           TimerTask task = () -> {
                try {
                     server.checkStatus(orderId).thenAccept(orderStatus -> gui.updateStatusLog(orderStatus.text));
@@ -60,6 +59,8 @@ public class Client extends AbstractOrderClient{
           Timer timer = new Timer("Timer");
           long delay = 1000L;
           timer.schedule(task, delay);
+
+           */
      }
 
      protected void pickUpOrder() {

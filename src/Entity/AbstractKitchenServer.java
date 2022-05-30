@@ -29,7 +29,7 @@ public abstract class AbstractKitchenServer {
      * Note that the methods should sleep for a random duration before it returns a status.
      * This is to simulate an actual server-call that might operate slowly.
      */
-    abstract public CompletableFuture<OrderStatus> receiveOrder(Order order) throws InterruptedException, IOException;
+    //abstract public CompletableFuture<OrderStatus> receiveOrder(Order order) throws InterruptedException, IOException;
 
     /**
      * Note that the methods should sleep for a random duration before it returns a status.
@@ -51,5 +51,5 @@ public abstract class AbstractKitchenServer {
      * Execute random delay and update the order status
      * {@link OrderStatus#Received} -> {@link OrderStatus#BeingPrepared} -> {@link OrderStatus#Ready}
      */
-    abstract protected void cook(Order order) throws InterruptedException;
+    //abstract protected void cook(Order order) throws InterruptedException;
 }

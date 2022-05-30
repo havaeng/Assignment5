@@ -1,4 +1,4 @@
-package Entity;
+/*package Entity;
 
 import Entity.AbstractKitchenServer;
 import Entity.Order;
@@ -69,3 +69,5 @@ public class ServerController extends AbstractKitchenServer {
         }
     }
 }
+
+ */

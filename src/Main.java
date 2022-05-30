@@ -1,9 +1,9 @@
-import Entity.ClientController;
-import Entity.ServerController;
+import Control.Controller;
 
 public class Main {
     public static void main(String[] args) {
-        ServerController serverController = new ServerController();
-        new ClientController(serverController);
+        new Controller();
+        //Server server = new Server();
+        //new Client(server);
     }
 }

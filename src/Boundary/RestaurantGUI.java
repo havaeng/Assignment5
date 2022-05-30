@@ -250,7 +250,7 @@ public class RestaurantGUI {
         switch (status){
             case Received -> {
                 string = "Recieved";//"You order " + user.getCurrentOrder().getOrderID() + " is recived!";
-                //           oos.writeObject(string);
+                           oos.writeObject(string);
             }
             case BeingPrepared -> {
                 string = "Prepared";//"Your order " + user.getCurrentOrder().getOrderID() + " is being prepared!";

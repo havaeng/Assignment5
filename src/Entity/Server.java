@@ -7,22 +7,45 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server extends AbstractKitchenServer {
+public class Server extends AbstractKitchenServer implements Runnable{
      private ExecutorService threadPool;
      private CompletableFuture<OrderStatus> completableFuture;
      private Map<String, Order> orderMap = new HashMap<>();
+     private Buffer buffer;
 
-     public Server() {
+     public Server(Buffer buffer) {
           threadPool = Executors.newFixedThreadPool(5);
+          this.buffer = buffer;
+          new Thread(this).start();
      }
 
-     public CompletableFuture<OrderStatus> receiveOrder(Order order) throws InterruptedException, IOException {
+     @Override
+     public void run() {
+          while (!buffer.isEmpty()){
+               CompletableFuture.supplyAsync(() -> {
+                    try {
+                         return receiveOrder(buffer.get());
+                    } catch (InterruptedException | IOException e) {
+                         throw new RuntimeException(e);
+                    }
+               }, threadPool).thenAccept(o -> {
+                    try {
+                         cook(o);
+                    } catch (InterruptedException e) {
+                         throw new RuntimeException(e);
+                    }
+               });
+          }
+     }
+
+
+     public Order receiveOrder(Order order) throws InterruptedException, IOException {
           Thread.sleep(1500);
-          completableFuture = CompletableFuture.supplyAsync(() -> order.getStatus());
+          completableFuture = CompletableFuture.supplyAsync(() -> order.getStatus(), threadPool);
           orderMap.put(order.getOrderID(), order);
           order.setStatus(OrderStatus.Received);
           cook(order);
-          return completableFuture;
+          return order;
      }
 
      public CompletableFuture<OrderStatus> checkStatus(String orderID) throws InterruptedException {
@@ -43,7 +66,7 @@ public class Server extends AbstractKitchenServer {
           return completableFuture;
      }
 
-     protected void cook(Order order) throws InterruptedException {
+     public void cook(Order order) throws InterruptedException {
           Thread.sleep(1500);
           order.setStatus(OrderStatus.BeingPrepared);
           serveOrder(order.getOrderID());
